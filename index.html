@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Intro to JS</h1>
+    <script src="/js/scripts.js"></script>
+    <script>
+      // test();
+      const person1 = {};
+      const person2 = {
+        name: "Nikc",
+        age: 23
+      };
+
+      person1.institute = "MATI";
+      person1.private = person2;
+
+      const obj = {
+        family: "ss",
+        name: "Lev",
+        father: "Gogi",
+        age: 21,
+        phone: {
+          city: 8,
+          region: 23,
+          number: "345-45-54"
+        }
+      };
+
+      const obj2 = {};
+      obj2.family = "ss";
+      obj2.name = "Lev";
+      obj2.father = "Gogi";
+      obj2.age = 21;
+      obj2.phone = {};
+      obj2.phone.city = 8;
+      obj2.phone.region = 23;
+      obj2.phone.number = "345-45-54";
+
+      // console.log(obj);
+      // console.log(obj2);
+
+      let a1 = { x: 5 };
+      let z2 = a1;
+      a1.y = a1 = { b: "Jone DOe" };
+      var person = {
+        a: "ok",
+        age: 25,
+        adress: "lo",
+        toString: function() {
+          return this.a + ", " + ", age: " + this.age + ", " + this.adress;
+        },
+        valueOf: function() {
+          return this.age;
+        }
+      };
+      // console.log(person +1 );
+      // console.log(person + ' comment')
+      // console.log(' ' + new Date)
+
+      // console.log(null == undefined);
+
+      var useAdress = "jeleznyakova";
+      var i = 0;
+
+      // for(; i< useAdress.length; i++) {
+      //   console.log('index [' , i , '] = ', useAdress[i]);
+      // }
+
+      // while(i< useAdress.length) {
+      //   console.log('index [' , i , '] = ', useAdress[i]);
+      //   i++
+      // }
+
+      // do {
+      //   console.log('index [' , i , '] = ', useAdress[i]);
+      //   i++
+      // } while(i< useAdress.length);
+
+      // console.log(5 + 'cj')
+      // console.log(5+5)
+      // console.log(5 + '5')
+      // console.log(5>10)
+      // console.log('a'>= 'a')
+
+      var a = 0;
+      var b = "0";
+      // console.log(!!'a' == true)
+
+      var str2 = "some xexn";
+      // console.log(str2.length, String(234).length);
+      // console.log(str2.charAt(3))
+
+      // console.log(str2.indexOf('e'))
+      // console.log(str2.substring(2,6))
+      // console.log(str2.substr(2,5))
+      // console.log(str2.slice(2,6))
+
+      let arr = [];
+      arr[0] = 1;
+      arr[5] = 3;
+
+      // переборы массивово
+      // for (let i in arr) {
+      //   console.log(arr[i]);
+      // }
+
+      // arr.forEach(item => console.log(item));
+
+      let string1 = "St PEterburg, Vladivostok, Moscow";
+      let cities = string1.split(",");
+      cities = cities.join("-");
+      delete cities[2];
+      // cities.splice(0, 2, "Gvatemal", "ok", 'go');
+      // console.log(cities);
+
+      let citiesCopy = cities.slice();
+      // console.log(citiesCopy);
+
+      //
+      const player = { score: 1, name: "Jeff" };
+      const player1 = Object.assign({}, player, { name: "Kriss" });
+      const player2 = { ...player, name: "Kriss" };
+      console.log(player1);
+      console.log(player2);
+      console.log(player);
+
+      // 1
+      let str1 = ",In God We trust;";
+      let del = " ,;";
+
+      function solution1(str, delimeter) {
+        const result = [...str]
+          .map(item => ([...delimeter].includes(item) ? " " : item))
+          .join("")
+          .split(" ")
+          .filter(item => !!item);
+        return result.length + " слов в строке";
+      }
+
+      console.log(solution1(str1, del));
+
+      // 2
+      //Найти в массиве те элементы знаечния которых меньше чем среднее арифметическое взятое
+      //от все хэлементов массива
+      let array1 = [10, 200, 3, 67, 34, 120, 345];
+
+      function solution2(arr) {
+        const mathMiddle = arr.reduce((acc, item, index) => {
+          const sum = acc + item;
+          const size = arr.length;
+          return index === size - 1 ? Math.round(sum / size) : sum;
+        });
+        return arr.filter(item => item < mathMiddle);
+      }
+
+      console.log(solution2(array1));
+    </script>
+  </body>
+</html>
