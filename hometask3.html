@@ -8,27 +8,18 @@
   </head>
   <body>
     <script>
-      function mathMiddle(arr) {
-        return arr.reduce((acc, item, index) => {
-          const sum = acc + item;
-          const size = arr.length;
-          return index === size - 1 ? Math.round(sum / size) : sum;
-        });
-      }
-
       function Student(fname, lname, pname, email) {
         this.fname = fname;
         this.lname = lname;
         this.pname = pname;
         this.email = email;
-
         this.contactPhone = {
           country: null,
           region: null,
           number: null
         };
-
         this.averageRating = null;
+        this.marks = [];
 
         this.countRating = () => {
           if (this.marks.length) {
@@ -40,8 +31,6 @@
           }
           return 0;
         };
-
-        this.marks = [];
 
         this.addMark = mark => {
           this.marks.push(mark);
