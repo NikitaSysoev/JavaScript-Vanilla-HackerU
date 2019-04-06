@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var _name = {
+        name: 'ok'
+      };
+      function Person(name, age) {
+        var tmpName = {
+          name: name || "name",
+          age: age || "age"
+        };
+        this.name = name;
+        this.age = age;
+        this.phone = {
+          country: null,
+          region: null,
+          number: null
+        };
+        this.address = {
+          city: null,
+          street: null,
+          house: null
+        };
+        this.setPhone = (country, region, number) => {
+          this.phone.country = country;
+          this.phone.region = region;
+          this.phone.number = number;
+        };
+        this.setAdress = (city, street, house) => {
+          this.address = { city, street, house };
+        };
+        this.printUser = () => {
+          return `${this.phone.country} ${this.phone.city} ${
+            this.phone.number
+          } ${this.address.city} ${this.address.street} ${this.address.house}`;
+        };
+        this.hobby = [];
+        // console.log("Function Person execute for", name, this._name);
+        if (typeof tmpName === "object") {
+          return tmpName.name + " " + tmpName.age;
+        }
+        return tmpName;
+      }
+
+      var person1 = new Person("John", 23);
+      // console.log(person1);
+      // Person('sofi', 30)
+      person1.setPhone("USA", "Miami", "300-400-200");
+      person1.setAdress("Miami", "Ocktavia", "2a");
+      console.log(person1.printUser());
+      console.log(Person("ol"));
+
+      // 926 200 55 13
+    </script>
+  </body>
+</html>
