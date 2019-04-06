@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hometask3</title>
+  </head>
+  <body>
+    <script>
+      function mathMiddle(arr) {
+        return arr.reduce((acc, item, index) => {
+          const sum = acc + item;
+          const size = arr.length;
+          return index === size - 1 ? Math.round(sum / size) : sum;
+        });
+      }
+
+      function Student(fname, lname, pname, email) {
+        this.fname = fname;
+        this.lname = lname;
+        this.pname = pname;
+        this.email = email;
+
+        this.contactPhone = {
+          country: null,
+          region: null,
+          number: null
+        };
+
+        this.averageRating = null;
+
+        this.countRating = () => {
+          if (this.marks.length) {
+            return this.marks.reduce((acc, item, index) => {
+              const sum = acc + item;
+              const size = this.marks.length;
+              return index === size - 1 ? (sum / size).toFixed(2) : sum;
+            });
+          }
+          return 0;
+        };
+
+        this.marks = [];
+
+        this.addMark = mark => {
+          this.marks.push(mark);
+          this.averageRating = this.countRating();
+        };
+
+        this.removeMarkByIndex = index => {
+          this.marks.splice(index, 1);
+          this.averageRating = this.countRating();
+        };
+
+        this.updateMark = (mark, index) => {
+          this.marks.splice(index, 1, mark);
+          this.averageRating = this.countRating();
+        };
+
+        this.setPhone = ({ country, region, number }) =>
+          (this.contactPhone = { country, region, number });
+
+        this.setMail = email => (this.email = email);
+
+        this.setName = (fname, lname, pname) => {
+          this.fname = fname;
+          this.lname = lname;
+          this.pname = pname;
+        };
+
+        this.printStudent = () => {
+          let str = `Имя: ${this.lname}\n`;
+          str += `Фамилия: ${this.fname}\n`;
+          str += `Отчество: ${this.pname} \n`;
+          str += `Номер телефона: ${this.contactPhone.number}\n`;
+          str += `Почта: ${this.email}\n`;
+          str += `Всего оценок ${this.marks.length} \n`;
+          str += `Средний балл - ${this.averageRating} \n`;
+          str += `Оценки: ${this.marks.join(",")}\n`;
+          return str;
+        };
+      }
+
+      const student1 = new Student(
+        "Sysoev",
+        "Nikita",
+        "Alexandrovich",
+        "na@gmail.com"
+      );
+      student1.addMark(2);
+      student1.addMark(5);
+      student1.addMark(4);
+      student1.addMark(3);
+      student1.updateMark(3, 0);
+      student1.removeMarkByIndex(2);
+      student1.setPhone({
+        country: "Russia",
+        region: "Moscow",
+        number: "890-90-99"
+      });
+      student1.setName("Kaplan", "Nick", "Alexandrovich");
+      student1.setMail("nnn@gmail.ru");
+
+      console.log(student1.printStudent());
+    </script>
+  </body>
+</html>
