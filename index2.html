@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>lesson3</title>
   </head>
   <body>
     <script>
@@ -37,21 +37,19 @@
           this.address = { city, street, house };
         };
         this.printUser = () => {
-          return `${this.phone.country} ${this.phone.city} ${
+          return `${this.phone.country} ${this.phone.region} ${
             this.phone.number
           } ${this.address.city} ${this.address.street} ${this.address.house}`;
         };
         this.hobby = [];
         // console.log("Function Person execute for", name, this._name);
-        if (typeof tmpName === "object") {
+        if (tmpName && typeof tmpName === "object") {
           return tmpName.name + " " + tmpName.age;
         }
         return tmpName;
       }
 
       var person1 = new Person("John", 23);
-      // console.log(person1);
-      // Person('sofi', 30)
       person1.setPhone("USA", "Miami", "300-400-200");
       person1.setAdress("Miami", "Ocktavia", "2a");
       console.log(person1.printUser());
