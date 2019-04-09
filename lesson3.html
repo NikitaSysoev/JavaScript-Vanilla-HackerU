@@ -55,6 +55,23 @@
       console.log(person1.printUser());
       console.log(Person("ol"));
 
+      function sayHello(text){
+        console.log(text || sayHello.defaultText);
+      }
+
+      sayHello.defaultText = 'Nothing to say';
+
+      sayHello.clear = function(){
+        console.clear();
+      }
+
+      sayHello.clear();
+      sayHello('Hi');
+      sayHello();
+
+      
+
+
       // 926 200 55 13
     </script>
   </body>

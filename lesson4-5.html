@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>lesson4-5</title>
+  </head>
+  <body>
+    <script>
+      function sum(a, b, c) {
+        return a + b + c;
+      }
+
+      //   console.log(sum(1, 2, 3));
+
+      function sum2(a) {
+        return b => {
+          return c => {
+            return a + b + c;
+          };
+        };
+      }
+
+      // console.log
+      window.echo = function() {
+        console.log.apply(this, arguments);
+      };
+
+      //   echo(sum2(1)(2)(5));
+
+      //
+      function sum3(a) {
+        let currentSum = a;
+        function f() {
+          if (!arguments.length) {
+            return currentSum;
+          }
+          currentSum += arguments[0];
+          return f;
+        }
+        f.toString = function() {
+          return currentSum;
+        };
+        return f;
+      }
+
+      //   echo(sum3(1)(2)(3));
+
+      function recursion(a, n) {
+        if (n <= 0) return 1;
+        return a * recursion(a, n - 1);
+      }
+
+      //   echo(recursion(16, 2));
+
+      var studend = {
+        name: "Ilya",
+        course: 3
+      };
+
+      function printStudent() {
+        var args = Array.prototype.slice.call(arguments);
+        echo("student:".args.join(" - "));
+      }
+
+      //   printStudent.call(studend)
+
+      const arr = [1, 3, 10, [100, 25, 7], 5, 700, [10, 5, [10, 23], 4], 7, 8];
+
+      var ok = [];
+
+      function solution1(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (Array.isArray(arr[i])) {
+            solution1(arr[i]);
+            continue;
+          }
+          ok.push(arr[i]);
+        }
+        return ok;
+      }
+
+      echo(solution1(arr));
+
+      //
+      const factorial = (num, maxTime) => {
+        const startTime = Date.now();
+        function fn(num) {
+          if (Date.now() - startTime > maxTime) {
+            throw Error("it takes too long...");
+          }
+          if (!num) return 1;
+          return num * fn(num - 1);
+        }
+        return fn(num);
+      };
+
+      //   echo(factorial(50000, 1000000));
+
+      var city = {};
+
+      city.name = "Moscow";
+
+      Object.defineProperty(city, "age", {
+        value: 880,
+        writable: true,
+        enumerable: true
+      });
+
+      Object.defineProperty(city, "fullInfo", {
+        get: function() {
+          return this.age;
+        },
+        set: function(val) {
+          this.age = val.age;
+        }
+      });
+
+      echo("city =", city);
+
+      city.age = 50;
+
+      echo("city =", city);
+
+      for (var key in city) {
+        echo(city[key]);
+      }
+
+      echo(city.fullInfo);
+      city.fullInfo = { age: 70 };
+      echo(city.fullInfo);
+    </script>
+  </body>
+</html>
