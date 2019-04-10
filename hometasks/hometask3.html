@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hometask3</title>
+  </head>
+  <body>
+      <script src="../js/module.js"></script>
+    <script>
+      //   1. Написать функцию, которая принимает следующие аргументы (name, surname, age, sex ). Из функции вернуть объект со следующими ключами и значениями:
+      // - fullname : функция возвращает name + surname
+      // - greetMessage: функция возвращает обращение в зависимости от переданного поля sex.
+      // - age: функция возвращает возраст
+
+      function Passport(name, surname, age, sex) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.sex = sex;
+        this.fullname = () => this.name + " " + this.surname;
+        this.greetMessage = () => {
+          const ending = this.sex[0].toLowerCase() === "m" ? "ый" : "ая";
+          return "Уважаем" + ending;
+        };
+        this.printAge = () => this.age;
+      }
+
+      const passport1 = new Passport("Nick", "SS", "23", "Male");
+      log(passport1.fullname());
+      log(passport1.greetMessage());
+      log(passport1.printAge());
+      log("  ");
+
+      // 2. Написать функцию возвращую сумму для переданного числа - sumTo(n)
+      // Например:
+      // sumTo(2) = 2 + 1 = 3
+      // sumTo(4) = 4+ 3 +2 + 1 = 10
+      // sumTo(100) = 100 + 99 + 98 + n = 5050
+
+      function sumTo(n) {
+        if (n === 0) return 0;
+        return n + sumTo(n - 1);
+      }
+
+      function sumTo2(n) {
+        let sum = 0;
+        for (let i = 0; i <= n; i++) {
+          sum += i;
+        }
+        return sum;
+      }
+
+      log(sumTo(2));
+      log(sumTo(4));
+      log(sumTo(100));
+      log("  ");
+
+      //   3. Написать 2 функции, реализующие одну и ту же функциональность,
+      //   но разными методами: первая - с использование цикла,
+      //   вторая с использованием рекурсии, для подсчета арифметической
+      //   прогрессии числа (Последовательность, в которой каждый следующий член
+      //   можно найти, прибавив к предыдущему одно и то же число d,
+      //   называется арифметической прогрессией.)
+
+      function A(d, n) {
+        let sum = [];
+        for (let i = d; i <= n; i = i + d) {
+          sum.push(i);
+        }
+        return sum;
+      }
+
+      function B(d, n) {
+        const arr = [];
+        echo(g);
+        if (n === 0) return arr.concat(d);
+        return B(d + d, n - 1);
+      }
+
+      log(A(3, 20));
+      //   echo(B(3, 20));
+    </script>
+  </body>
+</html>
