@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hometask1</title>
+  </head>
+  <body>
+    <script src="../js/module.js"></script>
+    <script>
+      // 1
+      let str1 = ",In God We trust;";
+      let del = " ,;";
+
+      function solution1(str, delimeter) {
+        const result = [...str]
+          .map(item => ([...delimeter].includes(item) ? " " : item))
+          .join("")
+          .split(" ")
+          .filter(item => !!item);
+        return result.length + " слов в строке";
+      }
+
+      log(solution1(str1, del));
+
+      // 2
+      //Найти в массиве те элементы знаечния которых меньше чем среднее арифметическое взятое
+      //от все хэлементов массива
+      let array1 = [10, 200, 3, 67, 34, 120, 345];
+
+      function solution2(arr) {
+        const mathMiddle = arr.reduce((acc, item, index) => {
+          const sum = acc + item;
+          const size = arr.length;
+          return index === size - 1 ? Math.round(sum / size) : sum;
+        });
+        return arr.filter(item => item < mathMiddle);
+      }
+
+      log(solution2(array1));
+    </script>
+  </body>
+</html>

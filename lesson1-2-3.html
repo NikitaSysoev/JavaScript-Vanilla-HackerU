@@ -9,6 +9,7 @@
   <body>
     <h1>Intro to JS</h1>
     <script src="/js/scripts.js"></script>
+    <script src="js/module.js"></script>
     <script>
       // test();
       const person1 = {};
@@ -104,25 +105,54 @@
       let arr = [];
       arr[0] = 1;
       arr[5] = 3;
+      arr.push(6);
+      arr.pop();
+      let tmp1 = arr.shift(); // возвращает элемент
+      arr.unshift(tmp1); // добавляет элемент в начало
 
+      log(arr);
       // переборы массивово
-      // for (let i in arr) {
-      //   console.log(arr[i]);
-      // }
+      for (let i = 0; i <= arr.length; i++) {
+        log(arr[i]);
+      }
 
-      // arr.forEach(item => console.log(item));
+      for (let i in arr) {
+        log(arr[i]);
+      }
 
+      arr.forEach((item, index) => log(item, index));
+
+      clean();
+
+      // массивы встроенные методы
       let string1 = "St PEterburg, Vladivostok, Moscow";
-      let cities = string1.split(",");
-      cities = cities.join("-");
-      delete cities[2];
-      // cities.splice(0, 2, "Gvatemal", "ok", 'go');
-      // console.log(cities);
+      let cities = string1.split(","); // превратить строку в массив используя разделитель
+      log(cities);
+      cities = cities.join(" - "); // превратить массив обратно в строку встави разделитель
+      log(cities);
+      cities = cities.split(' - ');
+      delete cities[2]; // удалить значение элемента массива
+      log(cities);
 
+      // splice 0 - позиция с которой начать работать
+      // 3 - длина с которой будем работать
+      // просто удалить, удалить с заменой, просто вставить
+      cities.splice(2, 1, "Gvatemal", "ok", 'go');
+      log(cities);
+      clean();
+
+      // slice
       let citiesCopy = cities.slice();
-      // console.log(citiesCopy);
+      cities[0] = 'New Yourk'
+      log(citiesCopy);
+      log(cities);
+      cities.reverse();
+      log(cities);
+      cities = cities.concat('Miami');
+      log(cities)
+      clean();
 
-      //
+      // объекты
       const player = { score: 1, name: "Jeff" };
       const player1 = Object.assign({}, player, { name: "Kriss" });
       const player2 = { ...player, name: "Kriss" };
