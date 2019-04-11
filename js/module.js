@@ -1,5 +1,4 @@
 ;(function(){
-    window.log = function(){
-        console.log.apply(this, arguments);
-    };
+    window.log = (...args) => console.log(...args);
+    window.clean = () => console.clear();
 }());
