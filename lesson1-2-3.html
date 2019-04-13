@@ -130,26 +130,26 @@
       log(cities);
       cities = cities.join(" - "); // превратить массив обратно в строку встави разделитель
       log(cities);
-      cities = cities.split(' - ');
+      cities = cities.split(" - ");
       delete cities[2]; // удалить значение элемента массива
       log(cities);
 
       // splice 0 - позиция с которой начать работать
       // 3 - длина с которой будем работать
       // просто удалить, удалить с заменой, просто вставить
-      cities.splice(2, 1, "Gvatemal", "ok", 'go');
+      cities.splice(2, 1, "Gvatemal", "ok", "go");
       log(cities);
       clean();
 
       // slice
       let citiesCopy = cities.slice();
-      cities[0] = 'New Yourk'
+      cities[0] = "New Yourk";
       log(citiesCopy);
       log(cities);
       cities.reverse();
       log(cities);
-      cities = cities.concat('Miami');
-      log(cities)
+      cities = cities.concat("Miami");
+      log(cities);
       clean();
 
       // объекты
@@ -161,9 +161,36 @@
       console.log(player);
 
       // 1
-      let str1 = ",In God We trust;";
+      let str1 = "  In God We trust";
       let del = " ,;";
 
+      function solution0(str, delimeter) {
+        let k = 0;
+        let y = 0;
+        for (let i = 0; i < str.length; i++) {
+          if (
+            str[i] === delimeter[0] ||
+            str[i] === delimeter[1] ||
+            str[i] === delimeter[2]
+          ) {
+            y = i;
+            if (
+              (str[i - 1] === delimeter[0] ||
+              str[i - 1] === delimeter[1] ||
+              str[i - 1] === delimeter[2]
+            )) {
+              continue;
+            }
+            k++;
+          }
+        }
+        const result = y === str.length - 1 ? k : k + 1;
+        return "Всего слов " + result;
+      }
+
+      console.log(solution0(str1, del));
+
+      //2
       function solution1(str, delimeter) {
         const result = [...str]
           .map(item => ([...delimeter].includes(item) ? " " : item))
