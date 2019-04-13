@@ -9,7 +9,7 @@
   <body>
     <script src="../js/module.js"></script>
     <script>
-      //   1. Написать функцию, которая принимает следующие аргументы (name, surname, age, sex ). 
+      //   1. Написать функцию, которая принимает следующие аргументы (name, surname, age, sex ).
       // Из функции вернуть объект со следующими ключами и значениями:
       // - fullname : функция возвращает name + surname
       // - greetMessage: функция возвращает обращение в зависимости от переданного поля sex.
@@ -74,13 +74,12 @@
       }
 
       function B(d, n) {
-        const arr = [];
-        if (n === 0) return arr.concat(d);
-        return B(d + d, n - 1);
+        if (n === 0) return d;
+        return d + B(d, n - 1);
       }
 
       log(A(3, 20));
-      // log(B(3, 20));
+      log(B(3, 20));
     </script>
   </body>
 </html>
