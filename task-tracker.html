@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>task-tracker</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <script src="js/module.js"></script>
+    <script src="js/taskTracker.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="taskName"
+                  >Task name<span class="text-muted">*</span></label
+                >
+                <input
+                  class="form-control"
+                  id="taskName"
+                  placeholder="Enter task name"
+                />
+                <small id="taskHelp" class="form-text text-muted">Это поле обязательное для заполнения</small>
+              </div>
+
+              <div class="form-group">
+                <label for="taskDescription">Task description</label>
+                <textarea
+                  class="form-control"
+                  id="taskDescription"
+                  rows="3"
+                ></textarea>
+                <small id="descriptionHelp" class="form-text text-muted"
+                  ></small
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="taskDate"
+                  >Task date<span class="text-muted">*</span></label
+                >
+                <input
+                  class="form-control"
+                  id="taskDate"
+                  placeholder="Enter task date"
+                />
+                <small id="dateHelp" class="form-text text-muted">Это поле обязательное для заполнения</small>
+              </div>
+
+              <div class="form-group form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="taskUrgent"
+                />
+                <label class="form-check-label" for="taskUrgent"
+                  ><i
+                    class="fas fa-exclamation-triangle"
+                  ></i
+                  >Urgent</label
+                >
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <button
+                    onClick="handleAddTask();"
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Add new task
+                  </button>
+                </div>
+                <div class="col-sm-6">
+                  <button
+                    onClick="clearForm();"
+                    type="submit"
+                    class="btn btn-secondary"
+                  >
+                    Clear form
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h3>List of tasks</h3>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  Cras justo odio
+                  <i class="fas fa-edit"></i>
+                  <i class="far fa-trash-alt"></i>
+                </li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL-->
+
+    <div class="modal" tabindex="-1" role="dialog" style="display: none">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.onload = () => {};
+    </script>
+  </body>
+</html>
