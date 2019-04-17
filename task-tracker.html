@@ -35,7 +35,9 @@
                   id="taskName"
                   placeholder="Enter task name"
                 />
-                <small id="taskHelp" class="form-text text-muted">Это поле обязательное для заполнения</small>
+                <small id="taskHelp" class="form-text text-muted"
+                  >Это поле обязательное для заполнения</small
+                >
               </div>
 
               <div class="form-group">
@@ -45,9 +47,10 @@
                   id="taskDescription"
                   rows="3"
                 ></textarea>
-                <small id="descriptionHelp" class="form-text text-muted"
-                  ></small
-                >
+                <small
+                  id="descriptionHelp"
+                  class="form-text text-muted"
+                ></small>
               </div>
 
               <div class="form-group">
@@ -59,7 +62,9 @@
                   id="taskDate"
                   placeholder="Enter task date"
                 />
-                <small id="dateHelp" class="form-text text-muted">Это поле обязательное для заполнения</small>
+                <small id="dateHelp" class="form-text text-muted"
+                  >Это поле обязательное для заполнения</small
+                >
               </div>
 
               <div class="form-group form-check">
@@ -69,17 +74,14 @@
                   id="taskUrgent"
                 />
                 <label class="form-check-label" for="taskUrgent"
-                  ><i
-                    class="fas fa-exclamation-triangle"
-                  ></i
-                  >Urgent</label
+                  ><i class="fas fa-exclamation-triangle"></i>Urgent</label
                 >
               </div>
 
               <div class="row">
                 <div class="col-sm-6">
                   <button
-                    onClick="handleAddTask();"
+                    onclick="handleAddTask();"
                     type="submit"
                     class="btn btn-primary"
                   >
@@ -88,7 +90,7 @@
                 </div>
                 <div class="col-sm-6">
                   <button
-                    onClick="clearForm();"
+                    onclick="clearForm();"
                     type="submit"
                     class="btn btn-secondary"
                   >
@@ -104,17 +106,7 @@
           <div class="card">
             <div class="card-body">
               <h3>List of tasks</h3>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  Cras justo odio
-                  <i class="fas fa-edit"></i>
-                  <i class="far fa-trash-alt"></i>
-                </li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-              </ul>
+              <div id="taksList"></div>
             </div>
           </div>
         </div>
@@ -154,7 +146,22 @@
       </div>
     </div>
     <script>
-      window.onload = () => {};
+      window.onload = () => {
+        storageToState();
+        renderList();
+
+        document.addEventListener(
+          "click",
+          e => {
+            if (hasClass(e.target, "fa-trash-alt")) {
+              handleDeleteTask(e);
+            } else if (hasClass(e.target, "fa-edit")) {
+              handleEditTask(e);
+            }
+          },
+          false
+        );
+      };
     </script>
   </body>
 </html>

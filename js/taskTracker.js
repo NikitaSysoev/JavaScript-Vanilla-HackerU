@@ -4,6 +4,7 @@ const STATE = {
   isOpenedPopup: false, // true / false -флаг открыто/ закрыто модальное окно
   formData: {
     // данные формы
+    id: null, // уникальный идентификатор
     taskName: null, // название задачи
     taskDescription: null, // описание
     taskDate: null, // дата
@@ -12,6 +13,8 @@ const STATE = {
 };
 
 function collectDataFromForm() {
+  // создаем уникальный идентификатор для кажого вновь созданнного таска
+  STATE.formData.id = "id" + new Date().getTime();
   STATE.formData.taskName = document.getElementById("taskName").value;
   STATE.formData.taskDescription = document.getElementById(
     "taskDescription"
@@ -29,9 +32,19 @@ function clearForm() {
   highlightFormField("taskName");
 }
 
+function fillForm({ taskName, taskDescription, taskDate, taskUrgent }) {
+  document.getElementById("taskName").value = taskName;
+  document.getElementById("taskDescription").value = taskDescription;
+  document.getElementById("taskDate").value = taskDate;
+  document.getElementById("taskUrgent").checked = taskUrgent;
+  highlightFormField("taskDate", SUCCESS);
+  highlightFormField("taskName", SUCCESS);
+}
+
 function pushDataToList() {
-  STATE.taskList.push(STATE.formData);
+  STATE.taskList = [...STATE.taskList, STATE.formData];
   STATE.formData = {
+    id: null,
     taskName: null,
     taskDescription: null,
     taskDate: null,
@@ -98,35 +111,75 @@ function highlightFormField(id, tp, msg = "") {
 
 function validateFromForm() {
   const retVal = [];
-  if (!STATE.formData.taskName.length) {
+  if (!STATE.formData.taskName) {
     retVal.push("taskName");
   }
-  if (!STATE.formData.taskDate.length) {
+  if (!STATE.formData.taskDate) {
     retVal.push("taskDate");
   }
   return retVal;
 }
 
-function pushStateToLocalStorage() {
-  const taksList = JSON.stringify(STATE.taskList);
-  localStorage.setItem("taksList", taksList);
+function storageToState() {
+  const localList = JSON.parse(localStorage.getItem("taksList"));
+  STATE.taskList = Array.isArray(localList) ? localList : [];
+}
+
+function stateToStorage() {
+  localStorage.setItem("taksList", JSON.stringify(STATE.taskList));
+}
+
+function renderList() {
+  const container = document.getElementById("taksList");
+  let div = '<ul class="list-group">';
+  STATE.taskList.forEach(item => {
+    div += `<li id="${item.id}" class="list-group-item">${item.taskName} `;
+    div += '<i class="fas fa-edit"></i> ';
+    div += '<i class="far fa-trash-alt" style="cursor: pointer"></i>';
+    div += "</li>";
+  });
+  div += "</ul>";
+  container.innerHTML = div;
+}
+
+function handleDeleteTask(e) {
+  const id = e.target.parentNode.id;
+  STATE.taskList = STATE.taskList.filter(item => item.id !== id);
+  stateToStorage();
+  renderList();
+}
+
+function handleEditTask(e) {
+  STATE.formState = "edit";
+  const id = e.target.parentNode.id;
+  const findedItem = STATE.taskList.find(item => item.id === id);
+  const indexFindedItem = STATE.taskList.indexOf(findedItem);
+  log(findedItem);
+  log(indexFindedItem)
+  fillForm(findedItem);
+  collectDataFromForm();
 }
 
 function handleAddTask() {
+  STATE.formState = "add";
   collectDataFromForm();
   let checkResult = validateFromForm();
-  if (!checkResult.includes("taskName")) {
+  if (!checkResult.includes("taskName"))
     highlightFormField("taskName", SUCCESS);
-  }
-  if (!checkResult.includes("taskDate")) {
+  if (!checkResult.includes("taskDate"))
     highlightFormField("taskDate", SUCCESS);
-  }
   if (checkResult.length) {
-    checkResult.forEach(item => {
-      highlightFormField(item, DANGER, "заполните поле");
-    });
+    checkResult.forEach(item =>
+      highlightFormField(item, DANGER, "заполните поле")
+    );
     return false;
   }
   pushDataToList();
   clearForm();
+  renderList();
+  stateToStorage();
+}
+
+function hasClass(elem, className) {
+  return elem.classList.contains(className);
 }
