@@ -5,6 +5,7 @@ const STATE = {
   formData: {
     // данные формы
     id: null, // уникальный идентификатор
+    index: null, // индекс редактируемого элемента
     taskName: null, // название задачи
     taskDescription: null, // описание
     taskDate: null, // дата
@@ -42,71 +43,23 @@ function fillForm({ taskName, taskDescription, taskDate, taskUrgent }) {
 }
 
 function pushDataToList() {
-  STATE.taskList = [...STATE.taskList, STATE.formData];
+  if (STATE.formState === "add") {
+    STATE.taskList = [...STATE.taskList, STATE.formData];
+  }
+  if (STATE.formState === "edit") {
+    const newArrayTaskList = [...STATE.taskList];
+    newArrayTaskList.splice(STATE.formData.index, 1, STATE.formData);
+    STATE.taskList = newArrayTaskList;
+  }
+  STATE.formState = "add";
   STATE.formData = {
     id: null,
+    index: null,
     taskName: null,
     taskDescription: null,
     taskDate: null,
     taskUrgent: false
   };
-}
-
-const DANGER = "danger";
-const SUCCESS = "success";
-
-function highlightFormField(id, tp, msg = "") {
-  const message = msg;
-  const dangerClass = "text-danger";
-  const mutedClass = "text-muted";
-  const formDangerClass = "is-invalid";
-  const formSuccessClass = "is-valid";
-
-  const type = tp === DANGER ? dangerClass : mutedClass;
-  let htmlId = "";
-  switch (id) {
-    case "taskName":
-      htmlId = "taskHelp";
-      break;
-    case "taskDescription":
-      htmlId = "descriptionHelp";
-      break;
-    case "taskDate":
-      htmlId = "dateHelp";
-      break;
-  }
-
-  const helper = document.getElementById(htmlId);
-  helper.classList.remove(dangerClass);
-  helper.classList.remove(mutedClass);
-  helper.classList.add(type);
-  helper.innerText = message;
-
-  const input = document.getElementById(id);
-  input.classList.remove(formDangerClass);
-  input.classList.remove(formSuccessClass);
-  const label = input.closest(".form-group").getElementsByTagName("label")[0];
-  const labelStar = label.getElementsByTagName("span")[0];
-  labelStar.classList.remove(mutedClass);
-  if (tp === DANGER) {
-    input.classList.add(formDangerClass);
-    label.classList.add(dangerClass);
-    labelStar.classList.add(dangerClass);
-  } else {
-    input.classList.remove(formDangerClass);
-    label.classList.remove(dangerClass);
-    labelStar.classList.remove(dangerClass);
-  }
-
-  if (tp === SUCCESS) {
-    input.classList.add(formSuccessClass);
-    // label.classList.add(dangerClass);
-    // labelStar.classList.add(dangerClass);
-  } else {
-    input.classList.remove(formSuccessClass);
-    // label.classList.remove(dangerClass);
-    // labelStar.classList.remove(dangerClass);
-  }
 }
 
 function validateFromForm() {
@@ -133,8 +86,12 @@ function renderList() {
   const container = document.getElementById("taksList");
   let div = '<ul class="list-group">';
   STATE.taskList.forEach(item => {
-    div += `<li id="${item.id}" class="list-group-item">${item.taskName} `;
-    div += '<i class="fas fa-edit"></i> ';
+    div += `<li id="${item.id}" class="list-group-item">`;
+    div += `<p>${item.taskName} `;
+    div += item.taskUrgent ? '<i class="fas fa-exclamation"></i> ' : "";
+    div += "</p>";
+    div += `<p>${item.taskDescription}</p><p>${item.taskDate}</p>`;
+    div += '<i class="fas fa-edit" style="cursor: pointer"></i> ';
     div += '<i class="far fa-trash-alt" style="cursor: pointer"></i>';
     div += "</li>";
   });
@@ -142,27 +99,46 @@ function renderList() {
   container.innerHTML = div;
 }
 
+function renderButton() {
+  const button = document.getElementById("clickTask");
+  if (STATE.formState === "add") {
+    button.classList.remove("btn-warning");
+    button.classList.add("btn-primary");
+    button.textContent = "Add new task";
+  }
+  if (STATE.formState === "edit") {
+    button.classList.remove("btn-primary");
+    button.classList.add("btn-warning");
+    button.textContent = "Edit task";
+  }
+}
+
 function handleDeleteTask(e) {
+  STATE.formState = "add";
+  renderButton();
   const id = e.target.parentNode.id;
   STATE.taskList = STATE.taskList.filter(item => item.id !== id);
+  clearForm();
   stateToStorage();
   renderList();
 }
 
 function handleEditTask(e) {
-  STATE.formState = "edit";
-  const id = e.target.parentNode.id;
-  const findedItem = STATE.taskList.find(item => item.id === id);
-  const indexFindedItem = STATE.taskList.indexOf(findedItem);
-  log(findedItem);
-  log(indexFindedItem)
-  fillForm(findedItem);
-  collectDataFromForm();
+  if (STATE.formState === "add") {
+    STATE.formState = "edit";
+    const id = e.target.parentNode.id;
+    const findedItem = STATE.taskList.find(item => item.id === id);
+    STATE.formData.index = STATE.taskList.indexOf(findedItem);
+    fillForm(findedItem);
+  } else {
+    STATE.formState = "add";
+    STATE.formData.index = null;
+    clearForm();
+  }
+  renderButton();
 }
 
-function handleAddTask() {
-  STATE.formState = "add";
-  collectDataFromForm();
+function checkingErrors() {
   let checkResult = validateFromForm();
   if (!checkResult.includes("taskName"))
     highlightFormField("taskName", SUCCESS);
@@ -174,10 +150,19 @@ function handleAddTask() {
     );
     return false;
   }
-  pushDataToList();
-  clearForm();
-  renderList();
-  stateToStorage();
+  if (!checkResult.length) return true;
+}
+
+function handleTask() {
+  collectDataFromForm();
+  let noerrors = checkingErrors();
+  if (noerrors) {
+    pushDataToList();
+    renderButton();
+    clearForm();
+    renderList();
+    stateToStorage();
+  }
 }
 
 function hasClass(elem, className) {

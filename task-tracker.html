@@ -18,6 +18,7 @@
       crossorigin="anonymous"
     />
     <script src="js/module.js"></script>
+    <script src="js/highlightFormField.js"></script>
     <script src="js/taskTracker.js"></script>
   </head>
   <body>
@@ -81,9 +82,10 @@
               <div class="row">
                 <div class="col-sm-6">
                   <button
-                    onclick="handleAddTask();"
+                    onclick="handleTask();"
                     type="submit"
                     class="btn btn-primary"
+                    id="clickTask"
                   >
                     Add new task
                   </button>
@@ -130,7 +132,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Modal body text goes here.</p>
+            <p>Are you sure to save changes?</p>
           </div>
           <div class="modal-footer">
             <button
@@ -145,11 +147,13 @@
         </div>
       </div>
     </div>
+
+    <!---->
+
     <script>
       window.onload = () => {
         storageToState();
         renderList();
-
         document.addEventListener(
           "click",
           e => {
