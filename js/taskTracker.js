@@ -115,12 +115,9 @@ function renderButton() {
 
 function handleDeleteTask(e) {
   STATE.formState = "add";
-  renderButton();
   const id = e.target.parentNode.id;
   STATE.taskList = STATE.taskList.filter(item => item.id !== id);
-  clearForm();
-  stateToStorage();
-  renderList();
+  renderAndSave();
 }
 
 function handleEditTask(e) {
@@ -153,15 +150,19 @@ function checkingErrors() {
   if (!checkResult.length) return true;
 }
 
+function renderAndSave() {
+  renderButton();
+  clearForm();
+  renderList();
+  stateToStorage();
+}
+
 function handleTask() {
   collectDataFromForm();
   let noerrors = checkingErrors();
   if (noerrors) {
     pushDataToList();
-    renderButton();
-    clearForm();
-    renderList();
-    stateToStorage();
+    renderAndSave();
   }
 }
 
