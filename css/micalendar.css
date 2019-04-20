@@ -1,0 +1,125 @@
+.micalendar {
+  font-family: "Open Sans Condensed", sans-serif;
+  background-color: #fff;
+  width: 320px;
+  height: 400px;
+  position: absolute;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.26);
+  border-radius: 3px;
+  color: #616682;
+  z-index: 1000;
+}
+
+.micalendar .header_wrap {
+  background-color: #e9eaf0;
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #dcdfe7;
+}
+.micalendar .header_wrap .header {
+  line-height: 50px;
+  font-size: 13pt;
+  text-transform: uppercase;
+  width: 70%;
+  height: 100%;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.micalendar hr {
+  margin-top: -3px;
+  margin-bottom: 10px;
+}
+.micalendar .btn-group {
+  float: right;
+  padding-right: 20px;
+}
+.header p {
+  height: 50px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.micalendar .header_wrap .arrows {
+  line-height: 50px;
+  text-transform: uppercase;
+  width: 25%;
+  height: 100%;
+  float: right;
+  text-align: center;
+  font-size: 18pt;
+  padding-right: 15px;
+}
+.arrows .arrows_left {
+  padding-left: 10px;
+  padding-right: 10px;
+  float: left;
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.arrows i {
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+}
+.arrows .arrows_right {
+  line-height: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+  float: left;
+  display: inline-block;
+  cursor: pointer;
+  margin: auto;
+}
+
+.micalendar table {
+  border-collapse: separate;
+  border-spacing: 8px 8px;
+  border: 0px;
+  padding: 0px;
+  margin: 10px;
+}
+.micalendar table th {
+  text-align: center;
+  color: #67bde8;
+  border: 0px;
+  background-color: #fff;
+}
+.micalendar table td {
+  padding-right: 8px;
+  text-align: right;
+  width: 40px;
+  height: 32px;
+  color: #686d89;
+  background-color: #fff;
+  border: 1px solid #e2e5eb;
+  border-radius: 2px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+.micalendar table td:hover {
+  background-color: #cdd0dc;
+  cursor: pointer;
+}
+.micalendar table td.not_current {
+  color: #c9ccd9;
+  background-color: #fff;
+  border-color: #f0f0f0;
+}
+.micalendar table td.not_current:hover {
+  background-color: #cdd0dc;
+  color: #fff;
+}
+.micalendar table td.today {
+  background-color: #fc8368 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+#calendarOpener.input-group-text {
+  cursor: pointer !important;
+}

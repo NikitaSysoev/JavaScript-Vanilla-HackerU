@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>lesson9</title>
+    <style>
+      * {
+        font-size: 16px;
+      }
+
+      .div1 {
+        color: RED;
+        background-color: aquamarine;
+        margin: 20px;
+      }
+
+      .div2 {
+        color: white;
+        background-color: chocolate;
+        width: 70%;
+        margin: 20px;
+        padding: 40px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div class="div1" id="div1">
+      <br > DIV1 </br>
+      <div class="div2" id="div2">
+          <br> DIV2 </br>
+        <input id="input1" 
+        type="button" 
+        onclick="handleClickButton(event)" 
+        value="BUTTON: Click me" 
+        data-info="Some secret value through the attribute"
+        />
+      </div>
+      <br /><br />
+    </div>
+    <textarea id="txt1" cols="20" rows="8"></textarea>
+    <script>
+   
+
+    function toTextArea(val){
+        let areaText = document.getElementById('txt1').value;
+        areaText +='\n' + val;
+        document.getElementById('txt1').value = areaText;
+    }
+
+    function handleClickButton(e){
+        console.log('this is from BUTTON > handleClickButton', e);
+    }
+
+    function handleClickButtonSecond(e){
+        console.log('this is from BUTTON > handleClickButtonSecond ', this.getAttribute('data-info'))
+    }
+
+    function handleDivClick(e){
+        console.log(e.eventPhase);
+        console.log('PHASE 1', e.currentTarget);
+        e.stopPropagation();
+    }
+
+    function handleDivClickBubble(e){
+        console.log('PHASE ', e.eventPhase);
+        console.log(e.currentTarget);
+    }
+
+    function handleDOMClick(e){
+        console.log();
+    }
+
+    var inputElement = document.getElementById('input1');
+
+    document.getElementById('input1').onclick = handleClickButtonSecond;
+
+    var div1 = document.getElementById('div1');
+    var div2 = document.getElementById('div2');
+
+    div1.addEventListener('click', handleDivClick, true );
+    div2.addEventListener('click', handleDivClick, true );
+    div1.addEventListener('click', handleDivClickBubble, false );
+    div2.addEventListener('click', handleDivClickBubble, false );
+
+    
+    </script>
+  </body>
+</html>

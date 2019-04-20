@@ -82,21 +82,32 @@ function stateToStorage() {
   localStorage.setItem("taksList", JSON.stringify(STATE.taskList));
 }
 
+function clearList() {
+  STATE.taskList = [];
+  localStorage.removeItem("taksList");
+  renderList();
+}
+
 function renderList() {
   const container = document.getElementById("taksList");
-  let div = '<ul class="list-group">';
+  let div = "";
   STATE.taskList.forEach(item => {
     div += `<li id="${item.id}" class="list-group-item">`;
     div += `<p>${item.taskName} `;
-    div += item.taskUrgent ? '<i class="fas fa-exclamation"></i> ' : "";
+    div += item.taskUrgent
+      ? '<i class="text-danger fas fa-exclamation-triangle"></i> '
+      : "";
     div += "</p>";
     div += `<p>${item.taskDescription}</p><p>${item.taskDate}</p>`;
     div += '<i class="fas fa-edit" style="cursor: pointer"></i> ';
     div += '<i class="far fa-trash-alt" style="cursor: pointer"></i>';
     div += "</li>";
   });
-  div += "</ul>";
-  container.innerHTML = div;
+  div +=
+    '<button class="btn btn-danger" onclick="clearList();" style="margin-top: 10px;">';
+  div += "Clear List";
+  div += "</button>";
+  container.innerHTML = STATE.taskList.length ? div : "";
 }
 
 function renderButton() {
