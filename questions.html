@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Questions</title>
+  </head>
+  <body>
+    <script>
+      ////////////////////////////////
+
+      function Person() {
+        this.call = () => console.log(this);
+        this.call2 = function() {
+          console.log(this);
+        };
+      }
+      var person1 = new Person();
+      console.log(person1.call());
+      console.log(person1.call2());
+
+      var person2 = {
+        call: () => console.log(this),
+        call2: function() {
+          console.log(this);
+        }
+      };
+      console.log(person2.call());
+      console.log(person2.call2());
+
+      //////////////////////////
+    </script>
+  </body>
+</html>

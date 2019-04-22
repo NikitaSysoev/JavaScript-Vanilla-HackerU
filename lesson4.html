@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>lesson3</title>
+    <title>lesson4</title>
   </head>
   <body>
+    <h1>Lesson 4</h1>
     <script>
       var _name = {
-        name: 'ok'
+        name: "ok"
       };
       function Person(name, age) {
         var tmpName = {
@@ -55,18 +56,18 @@
       console.log(person1.printUser());
       console.log(Person("ol"));
 
-      function sayHello(text){
+      function sayHello(text) {
         console.log(text || sayHello.defaultText);
       }
 
-      sayHello.defaultText = 'Nothing to say';
+      sayHello.defaultText = "Nothing to say";
 
-      sayHello.clear = function(){
+      sayHello.clear = function() {
         console.clear();
-      }
+      };
 
       sayHello.clear();
-      sayHello('Hi');
+      sayHello("Hi");
       sayHello();
 
       // 926 200 55 13

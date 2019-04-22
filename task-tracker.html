@@ -29,6 +29,7 @@
           <div class="card">
             <div class="card-body">
               <div class="form-group">
+                <h4 id="form-header">Add Task</h4>
                 <label for="taskName"
                   >Task name<span class="text-muted">*</span></label
                 >
@@ -93,7 +94,8 @@
                 </div>
                 <div class="col-sm-6">
                   <button
-                    onclick="clearForm();"
+                    onclick="handleClearForm();"
+                    id="clearCancel"
                     type="submit"
                     class="btn btn-secondary"
                   >
@@ -118,8 +120,13 @@
 
     <!-- MODAL-->
 
-    <div class="modal" tabindex="-1" role="dialog" style="display: none">
-      <div class="modal-dialog" role="document">
+    <div
+      class="modal"
+      id="modalWindow"
+      tabindex="-1"
+      role="dialog"
+    >
+      <!-- <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Modal title</h5>
@@ -129,7 +136,9 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" onclick="handleCloseModal();"
+                >&times;</span
+              >
             </button>
           </div>
           <div class="modal-body">
@@ -146,26 +155,14 @@
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!---->
 
     <script>
       window.onload = () => {
-        storageToState();
-        renderList();
-        document.addEventListener(
-          "click",
-          e => {
-            if (hasClass(e.target, "fa-trash-alt")) {
-              handleDeleteTask(e);
-            } else if (hasClass(e.target, "fa-edit")) {
-              handleEditTask(e);
-            }
-          },
-          false
-        );
+        initPage();
       };
     </script>
   </body>

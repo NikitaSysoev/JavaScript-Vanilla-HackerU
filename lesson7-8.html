@@ -1,42 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>lesson7-8</title>
-
-</head>
-<body>
+  </head>
+  <body>
+    <h1>Lesson 7-8</h1>
     <script src="js/module.js"></script>
     <script>
-        // prototype
+      // prototype
 
-        // 1) new func_name
-        // 2) Object.create
-        // 3) {}
-        // 4) class
+      // 1) new func_name
+      // 2) Object.create
+      // 3) {}
+      // 4) class
 
-        // __proto__ всегда указывает на предка
+      // __proto__ всегда указывает на предка
 
-        let parent = { whoAmI: ' a parent'};
+      let parent = { whoAmI: " a parent" };
 
-        function Person(){
-            this.name = 'Svetlana';
-        }
+      function Person() {
+        this.name = "Svetlana";
+      }
 
-        let child1 = Object.create(parent);
-        log(child1);
-        let child2 = Object.create(new Person());
-        log(child2)
-
-
-        
-            
-
-
-
-
+      let child1 = Object.create(parent);
+      log(child1);
+      let child2 = Object.create(new Person());
+      log(child2);
     </script>
-</body>
+  </body>
 </html>
