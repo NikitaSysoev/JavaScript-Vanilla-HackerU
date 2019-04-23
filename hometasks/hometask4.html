@@ -68,14 +68,32 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-primary" onclick="countResult();">
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="handleCountNumbers();"
+        >
           Посчитать числа
+        </button>
+        <button
+          type="button"
+          class="btn btn-info"
+          onclick="handleCountString();"
+        >
+          Посчитать слова
         </button>
       </form>
       <div id="result1" style="margin-top: 10px;"></div>
     </div>
 
     <script>
+      const STATE = {
+        elements: [],
+        form: {
+          selectValue: null
+        }
+      };
+
       function solution(str, delimeter) {
         return [...str]
           .map(item => ([...delimeter].includes(item) ? " " : item))
@@ -107,32 +125,37 @@
       function countMaxOrMinValue(arr) {
         if (document.getElementById("maxValue").checked) {
           return `Максимальное значение равно ${maxOfArray(arr)}`;
-        }
-        if (document.getElementById("minValue").checked) {
+        } else {
           return `Минимальное значение равно ${minOfArray(arr)}`;
         }
       }
 
-      function countResult() {
-        const selectValue = document.getElementById("select1").value;
+      function getDataFromForm() {
         const inputBody = document.getElementById("input1").value;
         const withText = document.getElementById("checkbox1").checked;
-        const container = document.getElementById("result1");
         const delimeter = withText ? " " : " ;,";
+        STATE.form.selectValue = document.getElementById("select1").value;
+        STATE.elements = solution(inputBody, delimeter);
+      }
 
-        // вытаскиваем все слова из инпута
-        const arr = solution(inputBody, delimeter);
+      function renderResult(html) {
+        const container = document.getElementById("result1");
+        container.innerHTML = "";
+        container.innerHTML = html;
+      }
+
+      function handleCountNumbers() {
+        getDataFromForm();
         // оставляем только числа
-        const onlyNumbers = arr
+        const onlyNumbers = STATE.elements
           .map(item => +item)
           .filter(item => !Number.isNaN(item));
         // в зависмости от выбранного селекта исполняем нужную функцию
         const result =
-          selectValue === "Четные"
+          STATE.form.selectValue === "Четные"
             ? findEven(onlyNumbers)
             : findOdd(onlyNumbers);
 
-        // подготовливаем необходимую разметку для рендера
         let div = result.length
           ? '<div class="alert alert-success">'
           : '<div class="alert alert-danger">';
@@ -145,8 +168,47 @@
             ${countMaxOrMinValue(result)}</div>`
           : "";
 
-        container.innerHTML = "";
-        container.innerHTML = div;
+        renderResult(div);
+      }
+
+      function isLowerEnglish(elem) {
+        const x = elem.charCodeAt();
+        if (x >= 97 && x <= 122) {
+          return true;
+        }
+        return false;
+      }
+
+      function isUpperEnglish(elem) {
+        const x = elem.charCodeAt();
+        if (x >= 64 && x <= 90) {
+          return true;
+        }
+        return false;
+      }
+
+      // function isLetter(c) {
+      //   return c.toLowerCase() != c.toUpperCase();
+      // }
+
+      function handleCountString() {
+        getDataFromForm();
+        const arr = [...STATE.elements.join("")];
+        const onlyLowerEng = arr.filter(item => isLowerEnglish(item));
+        const onlyUpperEng = arr.filter(item => isUpperEnglish(item));
+
+        let div = onlyLowerEng.length
+          ? '<div class="alert alert-success">'
+          : '<div class="alert alert-danger">';
+        div += `Количество строчных английских букв ${onlyLowerEng.length}`;
+        div += "</div>";
+        div += onlyUpperEng.length
+          ? '<div class="alert alert-success">'
+          : '<div class="alert alert-danger">';
+        div += `Количество прописных английских букв ${onlyUpperEng.length}`;
+        div += "</div>";
+
+        renderResult(div);
       }
     </script>
   </body>

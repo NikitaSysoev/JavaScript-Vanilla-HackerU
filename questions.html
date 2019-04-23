@@ -17,7 +17,7 @@
         };
       }
       var person1 = new Person();
-      console.log(person1.call());
+      console.log(person1.call()); // почему здесь this указывате на объект
       console.log(person1.call2());
 
       var person2 = {
@@ -26,10 +26,54 @@
           console.log(this);
         }
       };
-      console.log(person2.call());
+      console.log(person2.call()); // здесь указывает на объект выше хотя там тоже  стрелочная
       console.log(person2.call2());
 
+
+
+
+
       //////////////////////////
+
+      function a(x) {
+        return x * 2;
+      }
+      var a;
+
+      alert(a); /// почему здесь будет функция а не undefined
+
+      //////////////////////
+
+
+
+
+      // Праивльно ли я указал LE
+      // Где здесь замыкание?
+      var w = "w";
+      // cтек переменных: w, Parent
+      // LexicalEnvironmentWindow: w, Parent, ссылка на LE = null
+      function Parent() {
+        // cтек переменных функции: b, Child
+        /// LexicalEnvironmentParent: b, Child, ссылка на LexicalEnvironmentWindow
+        var b = "b";
+        function Child(name) {
+          // cтек переменных функции: x, name
+          /// LexicalEnvironmentChild: x, name, ссылка на LexicalEnvironmentParent
+          var x = "x";
+          console.log(x);
+          console.log(b);
+          console.log(w);
+        }
+        Child();
+      }
+      Parent();
+      // для каждого вызова функции напимер Parent для нее создается специальный объект LexicalEnvironment
+      // и в нее вкладываются все переменные которые находятся на одном уровне с ней и уровнем выше 
+
+
+
+
+      ////////////////////
     </script>
   </body>
 </html>
