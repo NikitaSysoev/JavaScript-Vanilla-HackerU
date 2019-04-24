@@ -82,18 +82,34 @@
         >
           Посчитать слова
         </button>
+        <button
+          type="button"
+          class="btn btn btn-secondary"
+          onclick="handleNormalizeString();"
+        >
+          Привести строку в нормированный вид
+        </button>
+        <button
+          type="button"
+          class="btn btn-dark"
+          onclick="handleFindLongWords();"
+        >
+          Длинные слова
+        </button>
       </form>
       <div id="result1" style="margin-top: 10px;"></div>
     </div>
 
     <script>
+      // общее состояние приложения-формы
       const STATE = {
-        elements: [],
-        form: {
-          selectValue: null
-        }
+        input: "",
+        select: null,
+        delimeter: false,
+        checkboxMax: false
       };
 
+      // метод вытаскивания значений из строки по разделителям
       function solution(str, delimeter) {
         return [...str]
           .map(item => ([...delimeter].includes(item) ? " " : item))
@@ -102,57 +118,91 @@
           .filter(item => !!item);
       }
 
+      // метод суммы всех элементов в массиве
       function sumOfArray(arr) {
         return arr.reduce((acc, item) => acc + item);
       }
 
+      // метод нахождения нечетных чисел
       function findOdd(arr) {
         return arr.filter(item => item % 2 !== 0);
       }
 
+      // метод нахождения четных чисел
       function findEven(arr) {
         return arr.filter(item => item % 2 === 0);
       }
 
+      //метод нахождения максимального элемента в массиве
       function maxOfArray(arr) {
         return Math.max(...arr);
       }
 
+      // метод нахождения минимального элемента в массиве
       function minOfArray(arr) {
         return Math.min(...arr);
       }
 
+      // метод возвращающий разметку в зависимости от выбранного чекбокса
       function countMaxOrMinValue(arr) {
-        if (document.getElementById("maxValue").checked) {
+        if (STATE.checkboxMax) {
           return `Максимальное значение равно ${maxOfArray(arr)}`;
         } else {
           return `Минимальное значение равно ${minOfArray(arr)}`;
         }
       }
 
-      function getDataFromForm() {
-        const inputBody = document.getElementById("input1").value;
-        const withText = document.getElementById("checkbox1").checked;
-        const delimeter = withText ? " " : " ;,";
-        STATE.form.selectValue = document.getElementById("select1").value;
-        STATE.elements = solution(inputBody, delimeter);
+      // метод определения только строчных английских букв с помощью юникода
+      function isLowerEnglish(elem) {
+        const x = elem.charCodeAt();
+        if (x >= 97 && x <= 122) {
+          return true;
+        }
+        return false;
       }
 
+      // метод определения только прописных английских букв с помощью юникода
+      function isUpperEnglish(elem) {
+        const x = elem.charCodeAt();
+        if (x >= 64 && x <= 90) {
+          return true;
+        }
+        return false;
+      }
+
+      // метод получения сех необходимых значений из формы
+      function getDataFromForm() {
+        STATE.input = document.getElementById("input1").value;
+        STATE.delimeter = document.getElementById("checkbox1").checked
+          ? " "
+          : " ;,";
+        STATE.select = document.getElementById("select1").value;
+        STATE.checkboxMax = document.getElementById("maxValue").checked;
+      }
+
+      // общий метод рендера разметки в  DOM-узел
+      function render(html, node) {
+        node.innerHTML = "";
+        node.innerHTML = html;
+      }
+
+      // метод рендера разметки в узел result1
       function renderResult(html) {
         const container = document.getElementById("result1");
-        container.innerHTML = "";
-        container.innerHTML = html;
+        render(html, container);
       }
 
+      // метод работы с числами
       function handleCountNumbers() {
         getDataFromForm();
+        const elements = solution(STATE.input, STATE.delimeter);
         // оставляем только числа
-        const onlyNumbers = STATE.elements
+        const onlyNumbers = elements
           .map(item => +item)
           .filter(item => !Number.isNaN(item));
-        // в зависмости от выбранного селекта исполняем нужную функцию
+
         const result =
-          STATE.form.selectValue === "Четные"
+          STATE.select === "Четные"
             ? findEven(onlyNumbers)
             : findOdd(onlyNumbers);
 
@@ -171,29 +221,10 @@
         renderResult(div);
       }
 
-      function isLowerEnglish(elem) {
-        const x = elem.charCodeAt();
-        if (x >= 97 && x <= 122) {
-          return true;
-        }
-        return false;
-      }
-
-      function isUpperEnglish(elem) {
-        const x = elem.charCodeAt();
-        if (x >= 64 && x <= 90) {
-          return true;
-        }
-        return false;
-      }
-
-      // function isLetter(c) {
-      //   return c.toLowerCase() != c.toUpperCase();
-      // }
-
+      // метод работы со строками
       function handleCountString() {
         getDataFromForm();
-        const arr = [...STATE.elements.join("")];
+        const arr = [...STATE.input];
         const onlyLowerEng = arr.filter(item => isLowerEnglish(item));
         const onlyUpperEng = arr.filter(item => isUpperEnglish(item));
 
@@ -209,6 +240,41 @@
         div += "</div>";
 
         renderResult(div);
+      }
+
+      //  метод нормализации строки
+      function handleNormalizeString() {
+        getDataFromForm();
+        const elements = solution(STATE.input, " ");
+        const result = elements.join(" ");
+        document.getElementById("input1").value = result;
+      }
+
+      // функция-обработчик нахождения длинных слов
+      function handleFindLongWords() {
+        getDataFromForm();
+
+        const elements = solution(STATE.input, " ");
+        const mostLongWord = elements.reduce((acc, item) => {
+          return acc.length > item.length ? acc : item;
+        }, "");
+        const mostLongWords = elements.filter(
+          item => item.length === mostLongWord.length
+        );
+
+        const noDiv = '<div class="alert alert-danger">Cлов не найдено</div>';
+        let div = '<div class="alert alert-success">';
+        if (mostLongWords.length === 1) {
+          div += `Самое длинное слово: ${mostLongWord}`;
+        } else {
+          div += "Самые длинные слова: ";
+          mostLongWords.forEach(item => {
+            div += " " + item + " ";
+          });
+        }
+        div += "</div>";
+
+        mostLongWord ? renderResult(div) : renderResult(noDiv);
       }
     </script>
   </body>
