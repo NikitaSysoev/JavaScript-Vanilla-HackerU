@@ -68,34 +68,36 @@
             </label>
           </div>
         </div>
-        <button
-          type="button"
-          class="btn btn-primary"
-          onclick="handleCountNumbers();"
-        >
-          Посчитать числа
-        </button>
-        <button
-          type="button"
-          class="btn btn-info"
-          onclick="handleCountString();"
-        >
-          Посчитать слова
-        </button>
-        <button
-          type="button"
-          class="btn btn btn-secondary"
-          onclick="handleNormalizeString();"
-        >
-          Привести строку в нормированный вид
-        </button>
-        <button
-          type="button"
-          class="btn btn-dark"
-          onclick="handleFindLongWords();"
-        >
-          Длинные слова
-        </button>
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="handleCountNumbers();"
+          >
+            Посчитать числа
+          </button>
+          <button
+            type="button"
+            class="btn btn-info"
+            onclick="handleCountString();"
+          >
+            Посчитать слова
+          </button>
+          <button
+            type="button"
+            class="btn btn btn-secondary"
+            onclick="handleNormalizeString();"
+          >
+            Привести строку в нормированный вид
+          </button>
+          <button
+            type="button"
+            class="btn btn-dark"
+            onclick="handleFindLongWords();"
+          >
+            Длинные слова
+          </button>
+        </div>
       </form>
       <div id="result1" style="margin-top: 10px;"></div>
     </div>
@@ -170,7 +172,7 @@
         return false;
       }
 
-      // метод получения сех необходимых значений из формы
+      // метод получения всех необходимых значений из формы
       function getDataFromForm() {
         STATE.input = document.getElementById("input1").value;
         STATE.delimeter = document.getElementById("checkbox1").checked
@@ -180,7 +182,7 @@
         STATE.checkboxMax = document.getElementById("maxValue").checked;
       }
 
-      // общий метод рендера разметки в  DOM-узел
+      // общий метод рендера разметки в DOM-узел
       function render(html, node) {
         node.innerHTML = "";
         node.innerHTML = html;
@@ -192,7 +194,7 @@
         render(html, container);
       }
 
-      // метод работы с числами
+      // функция-обработчик работы с числами
       function handleCountNumbers() {
         getDataFromForm();
         const elements = solution(STATE.input, STATE.delimeter);
@@ -221,7 +223,7 @@
         renderResult(div);
       }
 
-      // метод работы со строками
+      // функция-обработчик работы со строками
       function handleCountString() {
         getDataFromForm();
         const arr = [...STATE.input];
@@ -242,12 +244,13 @@
         renderResult(div);
       }
 
-      //  метод нормализации строки
+      //  функция-обработчик нормализации строки
       function handleNormalizeString() {
         getDataFromForm();
         const elements = solution(STATE.input, " ");
         const result = elements.join(" ");
         document.getElementById("input1").value = result;
+        renderResult('');
       }
 
       // функция-обработчик нахождения длинных слов
