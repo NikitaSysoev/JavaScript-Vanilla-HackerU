@@ -18,9 +18,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="css/micalendar.css" />
-    <script src="js/module.js"></script>
-    <script src="js/highlightFormField.js"></script>
-    <script src="js/taskTracker.js"></script>
+    <script src="../js/module.js"></script>
+    <script src="./highlightFormField.js"></script>
+    <script src="./taskTracker.js"></script>
   </head>
   <body>
     <div class="container">
@@ -30,14 +30,8 @@
             <div class="card-body">
               <div class="form-group">
                 <h4 id="form-header">Add Task</h4>
-                <label for="taskName"
-                  >Task name<span class="text-muted">*</span></label
-                >
-                <input
-                  class="form-control"
-                  id="taskName"
-                  placeholder="Enter task name"
-                />
+                <label for="taskName">Task name<span class="text-muted">*</span></label>
+                <input class="form-control" id="taskName" placeholder="Enter task name" />
                 <small id="taskHelp" class="form-text text-muted"
                   >Это поле обязательное для заполнения</small
                 >
@@ -45,37 +39,20 @@
 
               <div class="form-group">
                 <label for="taskDescription">Task description</label>
-                <textarea
-                  class="form-control"
-                  id="taskDescription"
-                  rows="3"
-                ></textarea>
-                <small
-                  id="descriptionHelp"
-                  class="form-text text-muted"
-                ></small>
+                <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                <small id="descriptionHelp" class="form-text text-muted"></small>
               </div>
 
               <div class="form-group">
-                <label for="taskDate"
-                  >Task date<span class="text-muted">*</span></label
-                >
-                <input
-                  class="form-control"
-                  id="taskDate"
-                  placeholder="Enter task date"
-                />
+                <label for="taskDate">Task date<span class="text-muted">*</span></label>
+                <input class="form-control" id="taskDate" placeholder="Enter task date" />
                 <small id="dateHelp" class="form-text text-muted"
                   >Это поле обязательное для заполнения</small
                 >
               </div>
 
               <div class="form-group form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="taskUrgent"
-                />
+                <input type="checkbox" class="form-check-input" id="taskUrgent" />
                 <label class="form-check-label" for="taskUrgent"
                   ><i class="fas fa-exclamation-triangle"></i>Urgent</label
                 >
@@ -120,12 +97,7 @@
 
     <!-- MODAL-->
 
-    <div
-      class="modal"
-      id="modalWindow"
-      tabindex="-1"
-      role="dialog"
-    >
+    <div class="modal" id="modalWindow" tabindex="-1" role="dialog">
       <!-- <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">

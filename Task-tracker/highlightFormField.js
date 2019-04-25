@@ -1,24 +1,24 @@
-const DANGER = "danger";
-const SUCCESS = "success";
+const DANGER = 'danger';
+const SUCCESS = 'success';
 
-function highlightFormField(id, tp, msg = "") {
+function highlightFormField(id, tp, msg = '') {
   const message = msg;
-  const dangerClass = "text-danger";
-  const mutedClass = "text-muted";
-  const formDangerClass = "is-invalid";
-  const formSuccessClass = "is-valid";
+  const dangerClass = 'text-danger';
+  const mutedClass = 'text-muted';
+  const formDangerClass = 'is-invalid';
+  const formSuccessClass = 'is-valid';
 
   const type = tp === DANGER ? dangerClass : mutedClass;
-  let htmlId = "";
+  let htmlId = '';
   switch (id) {
-    case "taskName":
-      htmlId = "taskHelp";
+    case 'taskName':
+      htmlId = 'taskHelp';
       break;
-    case "taskDescription":
-      htmlId = "descriptionHelp";
+    case 'taskDescription':
+      htmlId = 'descriptionHelp';
       break;
-    case "taskDate":
-      htmlId = "dateHelp";
+    case 'taskDate':
+      htmlId = 'dateHelp';
       break;
   }
 
@@ -31,8 +31,8 @@ function highlightFormField(id, tp, msg = "") {
   const input = document.getElementById(id);
   input.classList.remove(formDangerClass);
   input.classList.remove(formSuccessClass);
-  const label = input.closest(".form-group").getElementsByTagName("label")[0];
-  const labelStar = label.getElementsByTagName("span")[0];
+  const label = input.closest('.form-group').getElementsByTagName('label')[0];
+  const labelStar = label.getElementsByTagName('span')[0];
   labelStar.classList.remove(mutedClass);
   if (tp === DANGER) {
     input.classList.add(formDangerClass);

@@ -30,12 +30,7 @@
         </div>
         <div class="form-group">
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="checkbox1"
-            />
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1" />
             <label class="form-check-label" for="checkbox1">
               Может содержать текст
             </label>
@@ -69,32 +64,16 @@
           </div>
         </div>
         <div class="d-flex justify-content-between">
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="handleCountNumbers();"
-          >
+          <button type="button" class="btn btn-primary" onclick="handleCountNumbers();">
             Посчитать числа
           </button>
-          <button
-            type="button"
-            class="btn btn-info"
-            onclick="handleCountString();"
-          >
+          <button type="button" class="btn btn-info" onclick="handleCountString();">
             Посчитать слова
           </button>
-          <button
-            type="button"
-            class="btn btn btn-secondary"
-            onclick="handleNormalizeString();"
-          >
+          <button type="button" class="btn btn btn-secondary" onclick="handleNormalizeString();">
             Привести строку в нормированный вид
           </button>
-          <button
-            type="button"
-            class="btn btn-dark"
-            onclick="handleFindLongWords();"
-          >
+          <button type="button" class="btn btn-dark" onclick="handleFindLongWords();">
             Длинные слова
           </button>
         </div>
@@ -105,7 +84,7 @@
     <script>
       // общее состояние приложения-формы
       const STATE = {
-        input: "",
+        input: '',
         select: null,
         delimeter: false,
         checkboxMax: false
@@ -114,9 +93,9 @@
       // метод вытаскивания значений из строки по разделителям
       function solution(str, delimeter) {
         return [...str]
-          .map(item => ([...delimeter].includes(item) ? " " : item))
-          .join("")
-          .split(" ")
+          .map(item => ([...delimeter].includes(item) ? ' ' : item))
+          .join('')
+          .split(' ')
           .filter(item => !!item);
       }
 
@@ -146,11 +125,11 @@
       }
 
       // метод возвращающий разметку в зависимости от выбранного чекбокса
-      function countMaxOrMinValue(arr) {
+      function countMaxOrMinValue(arr, str) {
         if (STATE.checkboxMax) {
-          return `Максимальное значение равно ${maxOfArray(arr)}`;
+          return `Максимальное значение среди ${str} равно ${maxOfArray(arr)}`;
         } else {
-          return `Минимальное значение равно ${minOfArray(arr)}`;
+          return `Минимальное значение среди ${str} равно ${minOfArray(arr)}`;
         }
       }
 
@@ -172,59 +151,73 @@
         return false;
       }
 
+      // метод окрашивания инпута в цвет ошибки
+      function addErrorInput() {
+        const input = document.getElementById('input1');
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+      }
+
+      // метод окрашивания инпута в цвет успеха
+      function addSuccessInput() {
+        const input = document.getElementById('input1');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+      }
+
+      // метод приведения инпута в нейтральное состояние
+      function clearErrorSuccessInput() {
+        const input = document.getElementById('input1');
+        input.classList.remove('is-valid');
+        input.classList.remove('is-invalid');
+      }
+
       // метод получения всех необходимых значений из формы
       function getDataFromForm() {
-        STATE.input = document.getElementById("input1").value;
-        STATE.delimeter = document.getElementById("checkbox1").checked
-          ? " "
-          : " ;,";
-        STATE.select = document.getElementById("select1").value;
-        STATE.checkboxMax = document.getElementById("maxValue").checked;
+        STATE.input = document.getElementById('input1').value;
+        STATE.delimeter = document.getElementById('checkbox1').checked ? ' ' : ' ;,';
+        STATE.select = document.getElementById('select1').value;
+        STATE.checkboxMax = document.getElementById('maxValue').checked;
       }
 
       // общий метод рендера разметки в DOM-узел
       function render(html, node) {
-        node.innerHTML = "";
+        node.innerHTML = '';
         node.innerHTML = html;
       }
 
       // метод рендера разметки в узел result1
       function renderResult(html) {
-        const container = document.getElementById("result1");
+        const container = document.getElementById('result1');
         render(html, container);
       }
 
       // функция-обработчик работы с числами
       function handleCountNumbers() {
+        clearErrorSuccessInput();
         getDataFromForm();
         const elements = solution(STATE.input, STATE.delimeter);
         // оставляем только числа
-        const onlyNumbers = elements
-          .map(item => +item)
-          .filter(item => !Number.isNaN(item));
+        const onlyNumbers = elements.map(item => +item).filter(item => !Number.isNaN(item));
 
-        const result =
-          STATE.select === "Четные"
-            ? findEven(onlyNumbers)
-            : findOdd(onlyNumbers);
-
+        const result = STATE.select === 'Четные' ? findEven(onlyNumbers) : findOdd(onlyNumbers);
+        const str = STATE.select === 'Четные' ? 'четных' : 'нечетных';
         let div = result.length
           ? '<div class="alert alert-success">'
           : '<div class="alert alert-danger">';
-        div += result.length
-          ? `Сумма равна ${sumOfArray(result)}`
-          : "Ничего не найдено";
-        div += "</div>";
+        div += result.length ? `Сумма ${str} равна ${sumOfArray(result)}` : 'Ничего не найдено';
+        div += '</div>';
         div += result.length
           ? `<div class="alert alert-success"> 
-            ${countMaxOrMinValue(result)}</div>`
-          : "";
+            ${countMaxOrMinValue(result, str)}</div>`
+          : '';
 
         renderResult(div);
       }
 
       // функция-обработчик работы со строками
       function handleCountString() {
+        clearErrorSuccessInput();
         getDataFromForm();
         const arr = [...STATE.input];
         const onlyLowerEng = arr.filter(item => isLowerEnglish(item));
@@ -234,12 +227,12 @@
           ? '<div class="alert alert-success">'
           : '<div class="alert alert-danger">';
         div += `Количество строчных английских букв ${onlyLowerEng.length}`;
-        div += "</div>";
+        div += '</div>';
         div += onlyUpperEng.length
           ? '<div class="alert alert-success">'
           : '<div class="alert alert-danger">';
         div += `Количество прописных английских букв ${onlyUpperEng.length}`;
-        div += "</div>";
+        div += '</div>';
 
         renderResult(div);
       }
@@ -247,35 +240,35 @@
       //  функция-обработчик нормализации строки
       function handleNormalizeString() {
         getDataFromForm();
-        const elements = solution(STATE.input, " ");
-        const result = elements.join(" ");
-        document.getElementById("input1").value = result;
+        const elements = solution(STATE.input, ' ');
+        const result = elements.join(' ');
+        document.getElementById('input1').value = result;
+        !elements.length ? addErrorInput() : addSuccessInput();
         renderResult('');
       }
 
       // функция-обработчик нахождения длинных слов
       function handleFindLongWords() {
+        clearErrorSuccessInput();
         getDataFromForm();
 
-        const elements = solution(STATE.input, " ");
+        const elements = solution(STATE.input, ' ');
         const mostLongWord = elements.reduce((acc, item) => {
           return acc.length > item.length ? acc : item;
-        }, "");
-        const mostLongWords = elements.filter(
-          item => item.length === mostLongWord.length
-        );
+        }, '');
+        const mostLongWords = elements.filter(item => item.length === mostLongWord.length);
 
         const noDiv = '<div class="alert alert-danger">Cлов не найдено</div>';
         let div = '<div class="alert alert-success">';
         if (mostLongWords.length === 1) {
           div += `Самое длинное слово: ${mostLongWord}`;
         } else {
-          div += "Самые длинные слова: ";
-          mostLongWords.forEach(item => {
-            div += " " + item + " ";
+          div += 'Самые длинные слова: ';
+          mostLongWords.forEach((item, index) => {
+            div += mostLongWords.length === index + 1 ? ' ' + item + ' ' : ' ' + item + ', ';
           });
         }
-        div += "</div>";
+        div += '</div>';
 
         mostLongWord ? renderResult(div) : renderResult(noDiv);
       }
