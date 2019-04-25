@@ -11,18 +11,15 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <script src="../js/module.js"></script>
   </head>
   <body>
     <div class="container">
       <h1>HomeTask 4</h1>
       <form>
         <div class="form-group">
-          <label for="input1">Введите</label>
           <input type="text" class="form-control" id="input1" placeholder="" />
         </div>
         <div class="form-group">
-          <label for="select1">Выберите</label>
           <select class="form-control" id="select1">
             <option>Четные</option>
             <option>Нечетные</option>
@@ -86,7 +83,7 @@
       const STATE = {
         input: '',
         select: null,
-        delimeter: false,
+        delimeter: null,
         checkboxMax: false
       };
 
@@ -166,7 +163,7 @@
       }
 
       // метод приведения инпута в нейтральное состояние
-      function clearErrorSuccessInput() {
+      function clearColorInput() {
         const input = document.getElementById('input1');
         input.classList.remove('is-valid');
         input.classList.remove('is-invalid');
@@ -194,7 +191,7 @@
 
       // функция-обработчик работы с числами
       function handleCountNumbers() {
-        clearErrorSuccessInput();
+        clearColorInput();
         getDataFromForm();
         const elements = solution(STATE.input, STATE.delimeter);
         // оставляем только числа
@@ -217,7 +214,7 @@
 
       // функция-обработчик работы со строками
       function handleCountString() {
-        clearErrorSuccessInput();
+        clearColorInput();
         getDataFromForm();
         const arr = [...STATE.input];
         const onlyLowerEng = arr.filter(item => isLowerEnglish(item));
@@ -249,7 +246,7 @@
 
       // функция-обработчик нахождения длинных слов
       function handleFindLongWords() {
-        clearErrorSuccessInput();
+        clearColorInput();
         getDataFromForm();
 
         const elements = solution(STATE.input, ' ');
