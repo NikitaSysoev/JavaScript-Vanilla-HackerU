@@ -101,11 +101,13 @@ function renderList() {
   let div = '';
   STATE.taskList.forEach((item, index) => {
     div += `<li class="list-group-item">`;
-    div += `<a onclick="handleTaskInfo(event)" href="#"><p>${item.taskName}</p></a>`;
-    div += item.taskUrgent ? '<i class="text-danger fas fa-exclamation-triangle"></i> ' : '';
-    div += `<p>${item.taskDescription}</p><p>${item.taskDate}</p>`;
-    div += `<i data-id=${index} onClick="handleEditTask(event)" class="fas fa-edit" style="cursor: pointer"></i> `;
-    div += `<i data-id=${index} onClick="handleDeleteTask(event)" class="far fa-trash-alt" style="cursor: pointer"></i>`;
+    div += item.taskUrgent ? '<i class="text-danger fa fa-exclamation-triangle"></i> &nbsp ' : '';
+    div += `<a onclick="handleTaskInfo(event)" href="#">${item.taskName}</a><br>`;
+    div += `<span class="text-muted"><small>${item.taskDate}</small></span><br>`;
+    div += '<span class="edit_ico">';
+    div += `<i data-id=${index} onClick="handleEditTask(event)" class="fas fa-edit"></i></span>`;
+    div += '<span class="delete_ico">';
+    div += `<i data-id=${index} onClick="handleDeleteTask(event)" class="fa fa-times"></i></span>`;
     div += '</li>';
   });
   div += '<button class="btn btn-danger" onclick="handleClearList();" style="margin-top: 10px;">';
@@ -194,7 +196,7 @@ function handleTask() {
 function handleTaskInfo(e) {
   e.preventDefault();
   const index = e.currentTarget.parentNode
-    .getElementsByClassName('fa-trash-alt')[0]
+    .getElementsByClassName('fa-times')[0]
     .getAttribute('data-id');
   STATE.modalType = 'INFO';
   STATE.modalBody = STATE.taskList[index];
@@ -213,11 +215,11 @@ function renderModalWindow() {
   div += '<span aria-hidden="true">&times;</span>';
   div += '</button></div><div class="modal-body">';
   if (STATE.modalType === 'INFO') {
-    div += `<p>Task Name - ${STATE.modalBody.taskName}</p>`;
+    div += `<p>Task Name: ${STATE.modalBody.taskName}</p>`;
     div += STATE.modalBody.taskDescription
-      ? `<p>Task Description - ${STATE.modalBody.taskDescription}</p>`
+      ? `<p>Task Description: ${STATE.modalBody.taskDescription}</p>`
       : '';
-    div += `<p>Task Date - ${STATE.modalBody.taskDate}</p>`;
+    div += `<p>Task Date: ${STATE.modalBody.taskDate}</p>`;
     div += STATE.modalBody.taskUrgent
       ? `<i class="text-danger fas fa-exclamation-triangle"></i>`
       : '';

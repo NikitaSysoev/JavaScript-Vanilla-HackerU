@@ -10,50 +10,49 @@
     <h1>Lesson 1-2-3</h1>
     <script src="js/module.js"></script>
     <script>
-      
       const person1 = {};
       const person2 = {
-        name: "Nikc",
+        name: 'Nikc',
         age: 23
       };
 
-      person1.institute = "MATI";
+      person1.institute = 'MATI';
       person1.private = person2;
 
       const obj = {
-        family: "ss",
-        name: "Lev",
-        father: "Gogi",
+        family: 'ss',
+        name: 'Lev',
+        father: 'Gogi',
         age: 21,
         phone: {
           city: 8,
           region: 23,
-          number: "345-45-54"
+          number: '345-45-54'
         }
       };
 
       const obj2 = {};
-      obj2.family = "ss";
-      obj2.name = "Lev";
-      obj2.father = "Gogi";
+      obj2.family = 'ss';
+      obj2.name = 'Lev';
+      obj2.father = 'Gogi';
       obj2.age = 21;
       obj2.phone = {};
       obj2.phone.city = 8;
       obj2.phone.region = 23;
-      obj2.phone.number = "345-45-54";
+      obj2.phone.number = '345-45-54';
 
       // console.log(obj);
       // console.log(obj2);
 
       let a1 = { x: 5 };
       let z2 = a1;
-      a1.y = a1 = { b: "Jone DOe" };
+      a1.y = a1 = { b: 'Jone DOe' };
       var person = {
-        a: "ok",
+        a: 'ok',
         age: 25,
-        adress: "lo",
+        adress: 'lo',
         toString: function() {
-          return this.a + ", " + ", age: " + this.age + ", " + this.adress;
+          return this.a + ', ' + ', age: ' + this.age + ', ' + this.adress;
         },
         valueOf: function() {
           return this.age;
@@ -65,7 +64,7 @@
 
       // console.log(null == undefined);
 
-      var useAdress = "jeleznyakova";
+      var useAdress = 'jeleznyakova';
       var i = 0;
 
       // for(; i< useAdress.length; i++) {
@@ -89,10 +88,10 @@
       // console.log('a'>= 'a')
 
       var a = 0;
-      var b = "0";
+      var b = '0';
       // console.log(!!'a' == true)
 
-      var str2 = "some xexn";
+      var str2 = 'some xexn';
       // console.log(str2.length, String(234).length);
       // console.log(str2.charAt(3))
 
@@ -124,67 +123,63 @@
       clean();
 
       // массивы встроенные методы
-      let string1 = "St PEterburg, Vladivostok, Moscow";
-      let cities = string1.split(","); // превратить строку в массив используя разделитель
+      let string1 = 'St PEterburg, Vladivostok, Moscow';
+      let cities = string1.split(','); // превратить строку в массив используя разделитель
       log(cities);
-      cities = cities.join(" - "); // превратить массив обратно в строку встави разделитель
+      cities = cities.join(' - '); // превратить массив обратно в строку встави разделитель
       log(cities);
-      cities = cities.split(" - ");
+      cities = cities.split(' - ');
       delete cities[2]; // удалить значение элемента массива
       log(cities);
 
       // splice 0 - позиция с которой начать работать
       // 3 - длина с которой будем работать
       // просто удалить, удалить с заменой, просто вставить
-      cities.splice(2, 1, "Gvatemal", "ok", "go");
+      cities.splice(2, 1, 'Gvatemal', 'ok', 'go');
       log(cities);
       clean();
 
       // slice
       let citiesCopy = cities.slice();
-      cities[0] = "New Yourk";
+      cities[0] = 'New Yourk';
       log(citiesCopy);
       log(cities);
       cities.reverse();
       log(cities);
-      cities = cities.concat("Miami");
+      cities = cities.concat('Miami');
       log(cities);
       clean();
 
       // объекты
-      const player = { score: 1, name: "Jeff" };
-      const player1 = Object.assign({}, player, { name: "Kriss" });
-      const player2 = { ...player, name: "Kriss" };
+      const player = { score: 1, name: 'Jeff' };
+      const player1 = Object.assign({}, player, { name: 'Kriss' });
+      const player2 = { ...player, name: 'Kriss' };
       console.log(player1);
       console.log(player2);
       console.log(player);
 
       // 1
-      let str1 = "  In God We trust";
-      let del = " ,;";
+      let str1 = '  In God We trust';
+      let del = ' ,;';
 
       function solution0(str, delimeter) {
         let k = 0;
         let y = 0;
         for (let i = 0; i < str.length; i++) {
-          if (
-            str[i] === delimeter[0] ||
-            str[i] === delimeter[1] ||
-            str[i] === delimeter[2]
-          ) {
+          if (str[i] === delimeter[0] || str[i] === delimeter[1] || str[i] === delimeter[2]) {
             y = i;
             if (
-              (str[i - 1] === delimeter[0] ||
+              str[i - 1] === delimeter[0] ||
               str[i - 1] === delimeter[1] ||
               str[i - 1] === delimeter[2]
-            )) {
+            ) {
               continue;
             }
             k++;
           }
         }
         const result = y === str.length - 1 ? k : k + 1;
-        return "Всего слов " + result;
+        return 'Всего слов ' + result;
       }
 
       console.log(solution0(str1, del));
@@ -192,11 +187,11 @@
       //2
       function solution1(str, delimeter) {
         const result = [...str]
-          .map(item => ([...delimeter].includes(item) ? " " : item))
-          .join("")
-          .split(" ")
+          .map(item => ([...delimeter].includes(item) ? ' ' : item))
+          .join('')
+          .split(' ')
           .filter(item => !!item);
-        return result.length + " слов в строке";
+        return result.length + ' слов в строке';
       }
 
       console.log(solution1(str1, del));

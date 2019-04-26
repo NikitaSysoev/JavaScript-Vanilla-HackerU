@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>lesson11</title>
+    <script src="js/module.js"></script>
+  </head>
+  <body>
+    <h1>Classes & Es6</h1>
+    <script>
+      class Person {
+        constructor(name, age, hobby) {
+          this.name = name;
+          this.age = age;
+          this.hobby = hobby;
+        }
+
+        sayHello() {
+          log(this.name, 'says hello');
+        }
+      }
+
+      var user1 = new Person('Mas', 30, ['ski', 'painting', 'dogs']);
+      var user2 = new Person('Rock', 25, ['snowbord']);
+
+      user1.sayHello();
+      user2.sayHello();
+
+      function FunctionBasedPerson(name, age, hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
+      }
+
+      FunctionBasedPerson.prototype.sayHello = function() {
+        log(this.name, 'says hello');
+      };
+
+      var user3 = new FunctionBasedPerson('Fo', 23, ['joles']);
+      user3.sayHello();
+
+      log(user1);
+      log(user3);
+
+      class Student extends Person {
+        static calcAverageRank(val) {
+          let sum = 0;
+          val.forEach(item => {
+            sum += item;
+          });
+          return sum / val.length;
+        }
+
+        constructor(name, age, hobby, averageRank) {
+          super(name, age, hobby);
+          this.averageRank = averageRank;
+        }
+
+        sayHello() {
+          super.sayHello();
+          log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
+        }
+
+        get fullInfo() {
+          return this.name + ', ' + this.age + ', средний бал' + this.averageRank;
+        }
+
+        set fullInfo(a) {
+          this.name = a.name;
+          this.age = a.age;
+          this.averageRank = a.averageRank;
+        }
+      }
+
+      var student1 = new Student('mikki', 20, ['dance'], 5);
+      student1.sayHello();
+
+      student1.fullInfo = { name: 'O', age: 10, averageRank: 4 };
+      log(student1.fullInfo);
+
+      log(Student.calcAverageRank([3, 4, 5, 6]));
+
+      console.clear();
+
+      log('var', test_var);
+
+      var test_var = 10;
+
+      let test_let = 20;
+      log('let', test_let);
+
+      /////
+      // деструктуризаця
+      var carArrow = {
+        model: 'ok'
+      };
+
+      const { model, age: carAge = 0 } = carArrow;
+
+      //  spread operator
+      const fruits = [];
+      const fruits2 = ['mango', ...fruits];
+
+      /// ..rest
+
+      
+
+    </script>
+  </body>
+</html>
