@@ -38,8 +38,13 @@
         log(this.name, 'says hello');
       };
 
+      FunctionBasedPerson.prototype.sayHello2 = () => {
+        log(this.name, 'says hello');
+      };
+
       var user3 = new FunctionBasedPerson('Fo', 23, ['joles']);
       user3.sayHello();
+      user3.sayHello2();
 
       log(user1);
       log(user3);
@@ -63,6 +68,11 @@
           log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
         }
 
+        sayHello2 = () => {
+          super.sayHello();
+          log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
+        }
+
         get fullInfo() {
           return this.name + ', ' + this.age + ', средний бал' + this.averageRank;
         }
@@ -76,13 +86,13 @@
 
       var student1 = new Student('mikki', 20, ['dance'], 5);
       student1.sayHello();
-
+      student1.sayHello2();
       student1.fullInfo = { name: 'O', age: 10, averageRank: 4 };
       log(student1.fullInfo);
 
       log(Student.calcAverageRank([3, 4, 5, 6]));
 
-      console.clear();
+     
 
       log('var', test_var);
 
@@ -92,9 +102,10 @@
       log('let', test_let);
 
       /////
-      // деструктуризаця
+      // деструктуризация
       var carArrow = {
-        model: 'ok'
+        model: 'ok',
+        age: 200
       };
 
       const { model, age: carAge = 0 } = carArrow;
@@ -104,9 +115,11 @@
       const fruits2 = ['mango', ...fruits];
 
       /// ..rest
+      const rest = (...rest) => {
+        log(rest);
+      };
 
-      
-
+      rest(1, 2);
     </script>
   </body>
 </html>

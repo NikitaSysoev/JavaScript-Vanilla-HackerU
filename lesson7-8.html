@@ -25,10 +25,33 @@
         this.name = "Svetlana";
       }
 
+      // Person.prototype.log = () => console.log('ok');
+      Person.prototype = parent;
+      parent.print = function()  {
+        log(this.whoAmI, this.name)
+      }
+
       let child1 = Object.create(parent);
       log(child1);
+
+      
       let child2 = Object.create(new Person());
       log(child2);
+      child2.print()
+     
+
+      let child3 = {};
+      Object.setPrototypeOf(child3, parent);
+      log(child3.whoAmI)
+      log(child3);
+
+      function hook(){
+        console.log('Доступно для всего')
+      }
+
+      Array.prototype.__proto__.hook = hook;
+
+      Object.hook();
     </script>
   </body>
 </html>

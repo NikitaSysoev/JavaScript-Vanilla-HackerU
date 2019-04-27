@@ -11,17 +11,17 @@
       ////////////////////////////////
 
       function Person() {
-        this.call = () => console.log(this);
+        this.call = () => console.log(this); // здесь метод значит this указывает на
         this.call2 = function() {
           console.log(this);
         };
       }
       var person1 = new Person();
-      console.log(person1.call()); // почему здесь this указывате на объект
+      console.log(person1.call()); 
       console.log(person1.call2());
 
       var person2 = {
-        call: () => console.log(this),
+        call: () => console.log(this), // здесь объявленеи стрелочной функции значит this указывает всегда на window ??
         call2: function() {
           console.log(this);
         }
@@ -69,6 +69,24 @@
         setTimeout(() => {
           console.log(i);
         }, 0);
+      }
+
+      // решение1
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          console.log(i);
+        }, 0);
+      }
+
+      // решение2
+      function print(val) {
+        setTimeout(() => {
+          console.log(val);
+        }, 0);
+      }
+
+      for (var i = 0; i < 10; i++) {
+        print(i);
       }
     </script>
   </body>
