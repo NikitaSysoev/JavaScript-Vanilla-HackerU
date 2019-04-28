@@ -45,7 +45,14 @@
 
               <div class="form-group">
                 <label for="taskDate">Task date<span class="text-muted">*</span></label>
-                <input class="form-control" id="taskDate" placeholder="Enter task date" />
+                <div class="input-group">
+                  <div class="input-group-prepend" onclick="handleShowCalendar(event);">
+                    <span class="input-group-text" id="calendarOpener">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <input readonly type="text" class="form-control" id="taskDate" placeholder="ok" />
+                </div>
                 <small id="dateHelp" class="form-text text-muted"
                   >Это поле обязательное для заполнения</small
                 >
@@ -89,16 +96,23 @@
             <div class="card-body">
               <h3>List of tasks</h3>
               <ul id="taksList" class="list-group"></ul>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                onclick="handleClearList();"
+                style="margin-top: 10px;"
+              >
+                Clear List
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- MODAL-->
+      <!-- MODAL-->
 
-    <div class="modal" id="modalWindow" tabindex="-1" role="dialog">
-      <!-- <div class="modal-dialog" role="document">
+      <div class="modal" id="modalWindow" tabindex="-1" role="dialog">
+        <!-- <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Modal title</h5>
@@ -128,14 +142,52 @@
           </div>
         </div>
       </div> -->
+      </div>
+
+      <!---->
+
+      <div id="calendar" class="micalendar" style="display:none; position:absolute">
+        <div class="header_wrap">
+          <div class="header">
+            <p id="monthHeader">Month name</p>
+          </div>
+          <div class="arrows">
+            <div id="prevButton" onclick="handlePrevCalendar(event);" class="arrows_left">
+              <i class="fa fa-angle-left"></i>
+            </div>
+            <div id="nextButton" onclick="handleNextCalendar(event);" class="arrows_right">
+              <i class="fa fa-angle-right"></i>
+            </div>
+          </div>
+        </div>
+        <table id="calendar_table">
+          <thead>
+            <tr>
+              <th>Пн</th>
+              <th>Вт</th>
+              <th>Ср</th>
+              <th>Чт</th>
+              <th>Пт</th>
+              <th>Сб</th>
+              <th>Вс</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <hr />
+        <div class="btn-group">
+          <input
+            type="button"
+            onclick="handleCloseCalendar(event)"
+            value="Отмена"
+            class="btn btn-sm btn-outline-secondary"
+          />
+        </div>
+      </div>
     </div>
 
-    <!---->
-
     <script>
-      window.onload = () => {
-        initPage();
-      };
+      window.onload = () => initPage();
     </script>
   </body>
 </html>

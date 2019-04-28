@@ -11,23 +11,35 @@
       ////////////////////////////////
 
       function Person() {
-        this.call = () => console.log(this); // здесь метод значит this указывает на
+        this.call = () => console.log(this); // здесь метод значит this указывает на 
         this.call2 = function() {
           console.log(this);
         };
       }
       var person1 = new Person();
-      console.log(person1.call()); 
+      console.log(person1.call());
       console.log(person1.call2());
 
       var person2 = {
+        name: 'pesonParent',
         call: () => console.log(this), // здесь объявленеи стрелочной функции значит this указывает всегда на window ??
         call2: function() {
           console.log(this);
+        },
+        personChild: {
+          name: 'personChild',
+          call: () => this,
+          call2: function() {
+            return {
+              arrowFunction: () => this
+            }
+          }
         }
       };
       console.log(person2.call());
       console.log(person2.call2());
+      console.log('child', person2.personChild.call())
+      console.log(person2.personChild.call2().arrowFunction().name)
 
       //////////////////////////
 
@@ -36,26 +48,23 @@
       }
       var a;
 
-      alert(a); /// почему здесь будет функция а не undefined
+      console.log(a); /// функция приоритетенее чем вар
 
       //////////////////////
 
-      // Праивльно ли я указал LE
       // Где здесь замыкание?
       var w = 'w';
       // cтек переменных: w, Parent
-      // LexicalEnvironmentWindow: w, Parent, ссылка на LE = null
+      // LexicalEnvironmentWindow: null
       function Parent() {
         // cтек переменных функции: b, Child
-        /// LexicalEnvironmentParent: b, Child, ссылка на LexicalEnvironmentWindow
+        /// LexicalEnvironmentParent: b, Child, w
         var b = 'b';
         function Child(name) {
           // cтек переменных функции: x, name
-          /// LexicalEnvironmentChild: x, name, ссылка на LexicalEnvironmentParent
+          /// LexicalEnvironmentChild: x, name, b, w
+          // замыкание здесь - b, w, Parent
           var x = 'x';
-          console.log(x);
-          console.log(b);
-          console.log(w);
         }
         Child();
       }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lesson12</title>
+    <script src="js/module.js"></script>
+  </head>
+  <body>
+    <h1>Promises</h1>
+    <div id="movieList"></div>
+    <script>
+      async function printMovies(data) {
+        const movies = await data.json();
+
+        let res = '';
+        movies.forEach((item, index) => {
+          res += '<li class="list-group-item">';
+          res += item.show.name + ' <br>';
+          res += item.show.premiered + ' <br>';
+          res += "<img src='" + item.show.image.medium + "'> " + item.show.name + ' <br>';
+          res += item.show.summary + ' <br></li>';
+        });
+
+        document.getElementById('movieList').innerHTML = res;
+
+        log('printMovies', movies);
+      }
+
+      function printError(err) {
+        log('printError', err);
+      }
+
+      // XMLHttpRequest
+      const movies = fetch('https://api.tvmaze.com/search/shows?q=batman');
+      movies.then(printMovies).catch(printError);
+      log(movies);
+
+      function promiseTimeout() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => log, 1500, ' hello 2.5 through the Promise');
+        });
+      }
+    </script>
+  </body>
+</html>
