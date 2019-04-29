@@ -222,13 +222,13 @@ function renderModalWindow() {
     div += STATE.modalBody.taskUrgent
       ? `<i class="text-danger fas fa-exclamation-triangle"></i>`
       : '';
+    div += '</div><div class="modal-footer">';
+    div +=
+      '<button type="button" class="btn btn-secondary" onclick="handleCloseModal();" data-dismiss="modal">';
+    div += 'Close';
+    div += '</button>';
+    div += '<button type="button" class="btn btn-primary">Save changes</button>';
   }
-  div += '</div><div class="modal-footer">';
-  div +=
-    '<button type="button" class="btn btn-secondary" onclick="handleCloseModal();" data-dismiss="modal">';
-  div += 'Close';
-  div += '</button>';
-  div += '<button type="button" class="btn btn-primary">Save changes</button>';
   div += '</div></div></div>';
   modal.innerHTML = div;
   modal.style.display = 'block';
@@ -291,7 +291,19 @@ function renderCalendar(yearToOperate, monthToOperate) {
   let dayCounterAfter = 1;
   let str_out_week = '';
 
-  for (let j = 1; j < 7; j++) {
+  let weeks = null;
+  if (
+    (firstDay.maxDays === 31 && firstDay.dayWeek === 6) ||
+    (firstDay.dayWeek === 7 && firstDay.maxDays >= 30)
+  ) {
+    weeks = 7;
+  } else if (firstDay.maxDays === 28 && firstDay.dayWeek === 1) {
+    weeks = 5;
+  } else {
+    weeks = 6;
+  }
+
+  for (let j = 1; j < weeks; j++) {
     let str_out = '';
     for (let i = 1; i < 8; i++) {
       let tmpCellObject = {};
@@ -390,7 +402,7 @@ function renderOneCalendarCell({
 /* возвращает объект с 2 полями: на какой день недели выпадает первое число месяца и сколько всего в месяце дней*/
 function getFirstDayOfMonth(yy, mm) {
   const firstDayOfCurrentMonth = new Date(yy, mm, 1); // дата на момент первого числа текущего месяца
-  const month = firstDayOfCurrentMonth.getMonth(); // месяц от 0 до 11, нужно прибавлять 1
+  // const month = firstDayOfCurrentMonth.getMonth(); // месяц от 0 до 11, нужно прибавлять 1
   // var dayMonth = firstDayOfCurrentMonth.getDate();
   let dayWeek = firstDayOfCurrentMonth.getDay(); // от 0 до 6, причем 0 - это воскресение
   dayWeek = dayWeek === 0 ? 7 : dayWeek;
@@ -405,5 +417,12 @@ function getLastDay(yy, mm) {
 }
 
 function handleClickCalendarCell(e) {
-  log(e);
+  const year = STATE.currYearCalendar;
+  let month = STATE.currMonthCalendar + 1;
+  month = month < 10 ? '0' + month : month;
+  let day = e.target.textContent;
+  day = day < 10 ? '0' + day : day;
+  const str = `${day}.${month}.${year}`;
+  document.getElementById('taskDate').value = str;
+  handleCloseCalendar();
 }
