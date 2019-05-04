@@ -2,8 +2,6 @@ const STATE = {
   taskList: [], // список задач
   formState: 'add', // [ add, edit, err ] - состсояние формы
   editIndex: null,
-  modalBody: null,
-  modalType: null,
   calendarVisible: false,
   calendarDate: new Date(),
   currMonthCalendar: new Date().getMonth(),
@@ -39,8 +37,8 @@ function fillForm({ taskName, taskDescription, taskDate, taskUrgent }) {
   document.getElementById('taskDescription').value = taskDescription;
   document.getElementById('taskDate').value = taskDate;
   document.getElementById('taskUrgent').checked = taskUrgent;
-  highlightFormField('taskDate', SUCCESS);
-  highlightFormField('taskName', SUCCESS);
+  highlightFormField('taskDate');
+  highlightFormField('taskName');
 }
 
 function pushDataToList() {
@@ -89,6 +87,7 @@ function stateToStorage() {
 function handleClearList() {
   STATE.taskList = [];
   localStorage.removeItem('TASKS');
+  if (STATE.isOpenedPopup) handleCloseModal();
   renderList();
   clearForm();
   STATE.formState = 'add';
@@ -112,7 +111,7 @@ function renderList() {
     div += '<span class="edit_ico">';
     div += `<i data-id=${index} onClick="handleEditTask(event)" class="fas fa-edit"></i></span>`;
     div += '<span class="delete_ico">';
-    div += `<i data-id=${index} onClick="handleDeleteTask(event)" class="fa fa-times"></i></span>`;
+    div += `<i data-id=${index} onClick="handleModalDelete(event);" class="fa fa-times"></i></span>`;
     div += '</li>';
   });
   const noDiv =
@@ -121,9 +120,7 @@ function renderList() {
 }
 
 function handleClearForm() {
-  if (STATE.formState === 'edit') {
-    STATE.formState = 'add';
-  }
+  if (STATE.formState === 'edit') STATE.formState = 'add';
   clearForm();
   renderButton();
 }
@@ -147,11 +144,24 @@ function renderButton() {
   }
 }
 
+function handleModalDelete(e) {
+  const index = e.target.getAttribute('data-id');
+  renderModalWindow('DELETE', index);
+}
+
+function handleModalDeleteAll() {
+  if (STATE.taskList.length) renderModalWindow('DELETE_ALL');
+}
+
 function handleDeleteTask(e) {
   STATE.formState = 'add';
   const index = e.target.getAttribute('data-id');
   STATE.taskList.splice(index, 1);
-  renderAndSave();
+  if (STATE.isOpenedPopup) handleCloseModal();
+  renderButton();
+  clearForm();
+  renderList();
+  stateToStorage();
 }
 
 function handleEditTask(e) {
@@ -165,61 +175,50 @@ function handleEditTask(e) {
     STATE.editIndex = null;
     clearForm();
   }
+  if (STATE.isOpenedPopup) handleCloseModal();
   renderButton();
 }
 
-function checkingErrors() {
-  let checkResult = validateFromForm();
-  if (!checkResult.includes('taskName')) highlightFormField('taskName', SUCCESS);
-  if (!checkResult.includes('taskDate')) highlightFormField('taskDate', SUCCESS);
+function handleTask() {
+  collectDataFromForm();
+  const checkResult = validateFromForm();
+  if (!checkResult.includes('taskName')) highlightFormField('taskName');
+  if (!checkResult.includes('taskDate')) highlightFormField('taskDate');
   if (checkResult.length) {
     checkResult.forEach(item => highlightFormField(item, DANGER, 'заполните поле'));
     return false;
   }
-  if (!checkResult.length) return true;
-}
-
-function renderAndSave() {
+  pushDataToList();
   renderButton();
   clearForm();
   renderList();
   stateToStorage();
 }
 
-function handleTask() {
-  collectDataFromForm();
-  let noerrors = checkingErrors();
-  if (noerrors) {
-    pushDataToList();
-    renderAndSave();
-  }
-}
-
 function handleTaskInfo(e) {
   e.preventDefault();
   const index = e.target.getAttribute('data-id');
-  STATE.modalType = 'INFO';
-  STATE.modalBody = STATE.taskList[index];
-  renderModalWindow();
+  renderModalWindow('INFO', index);
 }
 
-function renderModalWindow() {
+function renderModalWindow(type, index) {
   const modal = document.getElementById('modalWindow');
+  STATE.isOpenedPopup = true;
   modal.innerHTML = '';
   let div = '';
   div += '<div class="modal-dialog" role="document">';
   div += '<div class="modal-content">';
   div += '<div class="modal-header">';
-  if (STATE.modalType === 'INFO') {
-    div += `<h5 class="modal-title">${STATE.modalBody.taskName}</h5>`;
+  if (type === 'INFO') {
+    div += `<h5 class="modal-title">${STATE.taskList[index].taskName}</h5>`;
     div += '<button type="button" onclick="handleCloseModal();" class="close">';
     div += '<span aria-hidden="true">&times;</span>';
     div += '</button></div><div class="modal-body">';
-    div += STATE.modalBody.taskDescription
-      ? `<strong>Task Description: ${STATE.modalBody.taskDescription}</strong><br>`
+    div += STATE.taskList[index].taskDescription
+      ? `<strong>Task Description: ${STATE.taskList[index].taskDescription}</strong><br>`
       : '';
-    div += `<strong>Task Date: ${STATE.modalBody.taskDate}</strong><br>`;
-    div += STATE.modalBody.taskUrgent
+    div += `<strong>Task Date: ${STATE.taskList[index].taskDate}</strong><br>`;
+    div += STATE.taskList[index].taskUrgent
       ? `<i class="text-danger fas fa-exclamation-triangle"></i>`
       : '';
     div += '</div><div class="modal-footer">';
@@ -227,7 +226,32 @@ function renderModalWindow() {
       '<button type="button" class="btn btn-secondary" onclick="handleCloseModal();" data-dismiss="modal">';
     div += 'Close';
     div += '</button>';
-    div += '<button type="button" class="btn btn-primary">Save changes</button>';
+    div += `<button type="button" data-id=${index} onclick="handleEditTask(event);" class="btn btn-warning">Edit task</button>`;
+  }
+  if (type === 'DELETE') {
+    div += `<h5 class="modal-title">${STATE.taskList[index].taskName}</h5>`;
+    div += '<button type="button" onclick="handleCloseModal();" class="close">';
+    div += '<span aria-hidden="true">&times;</span>';
+    div += '</button></div><div class="modal-body">';
+    div += '<strong>Are you sure you want to remove this task?</strong><br>';
+    div += '</div><div class="modal-footer">';
+    div +=
+      '<button type="button" class="btn btn-secondary" onclick="handleCloseModal();" data-dismiss="modal">';
+    div += 'Cancel';
+    div += '</button>';
+    div += `<button type="button" data-id=${index} onclick="handleDeleteTask(event);" class="btn btn-danger">Yes</button>`;
+  }
+  if (type === 'DELETE_ALL') {
+    div += `<h5 class="modal-title">Delete all</h5>`;
+    div += '<button type="button" onclick="handleCloseModal();" class="close">';
+    div += '<span aria-hidden="true">&times;</span>';
+    div += '</button></div><div class="modal-body">';
+    div += '<strong>Are you sure to clear all tasks?</strong><br>';
+    div += '</div><div class="modal-footer">';
+    div += '<button type="button" class="btn btn-secondary" onclick="handleCloseModal();">';
+    div += 'No';
+    div += '</button>';
+    div += `<button type="button" onclick="handleClearList();" class="btn btn-danger">Yes</button>`;
   }
   div += '</div></div></div>';
   modal.innerHTML = div;
@@ -236,14 +260,13 @@ function renderModalWindow() {
 
 function handleCloseModal() {
   const modal = document.getElementById('modalWindow');
+  STATE.isOpenedPopup = false;
   modal.style.display = 'none';
   modal.innerHTML = '';
 }
 
 function handleShowCalendar(e) {
-  if (STATE.calendarVisible) {
-    return false;
-  }
+  if (STATE.calendarVisible) return false;
   const calendar = document.getElementById('calendar');
   const clickedIcon = e.target;
   const coords = clickedIcon.closest('.input-group-prepend').getBoundingClientRect();
@@ -403,7 +426,7 @@ function renderOneCalendarCell({
 function getFirstDayOfMonth(yy, mm) {
   const firstDayOfCurrentMonth = new Date(yy, mm, 1); // дата на момент первого числа текущего месяца
   // const month = firstDayOfCurrentMonth.getMonth(); // месяц от 0 до 11, нужно прибавлять 1
-  // var dayMonth = firstDayOfCurrentMonth.getDate();
+  // const dayMonth = firstDayOfCurrentMonth.getDate();
   let dayWeek = firstDayOfCurrentMonth.getDay(); // от 0 до 6, причем 0 - это воскресение
   dayWeek = dayWeek === 0 ? 7 : dayWeek;
   return {

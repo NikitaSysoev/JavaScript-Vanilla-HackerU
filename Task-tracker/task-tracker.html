@@ -39,7 +39,12 @@
 
               <div class="form-group">
                 <label for="taskDescription">Task description</label>
-                <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                <textarea
+                  class="form-control"
+                  id="taskDescription"
+                  rows="3"
+                  style="resize: none"
+                ></textarea>
                 <small id="descriptionHelp" class="form-text text-muted"></small>
               </div>
 
@@ -105,7 +110,7 @@
               <button
                 type="button"
                 class="btn btn-outline-danger"
-                onclick="handleClearList();"
+                onclick="handleModalDeleteAll();"
                 style="margin-top: 10px;"
               >
                 Clear List
@@ -191,9 +196,9 @@
         </div>
       </div>
     </div>
-
+    <!---->
     <script>
-      window.onload = () => initPage();
+      window.onload = initPage;
     </script>
   </body>
 </html>

@@ -4,44 +4,124 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Lesson12</title>
+    <title>lesson12</title>
     <script src="js/module.js"></script>
   </head>
   <body>
-    <h1>Promises</h1>
-    <div id="movieList"></div>
+    <h1>Classes & Es6</h1>
     <script>
-      async function printMovies(data) {
-        const movies = await data.json();
+      class Person {
+        constructor(name, age, hobby) {
+          this.name = name;
+          this.age = age;
+          this.hobby = hobby;
+        }
 
-        let res = '';
-        movies.forEach((item, index) => {
-          res += '<li class="list-group-item">';
-          res += item.show.name + ' <br>';
-          res += item.show.premiered + ' <br>';
-          res += "<img src='" + item.show.image.medium + "'> " + item.show.name + ' <br>';
-          res += item.show.summary + ' <br></li>';
-        });
-
-        document.getElementById('movieList').innerHTML = res;
-
-        log('printMovies', movies);
+        sayHello() {
+          log(this.name, 'says hello');
+        }
       }
 
-      function printError(err) {
-        log('printError', err);
+      var user1 = new Person('Mas', 30, ['ski', 'painting', 'dogs']);
+      var user2 = new Person('Rock', 25, ['snowbord']);
+
+      user1.sayHello();
+      user2.sayHello();
+
+      function FunctionBasedPerson(name, age, hobby) {
+        this.name = name;
+        this.age = age;
+        this.hobby = hobby;
       }
 
-      // XMLHttpRequest
-      const movies = fetch('https://api.tvmaze.com/search/shows?q=batman');
-      movies.then(printMovies).catch(printError);
-      log(movies);
+      FunctionBasedPerson.prototype.sayHello = function() {
+        log(this.name, 'says hello');
+      };
 
-      function promiseTimeout() {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => log, 1500, ' hello 2.5 through the Promise');
-        });
+      FunctionBasedPerson.prototype.sayHello2 = () => {
+        log(this.name, 'says hello');
+      };
+
+      var user3 = new FunctionBasedPerson('Fo', 23, ['joles']);
+      user3.sayHello();
+      user3.sayHello2();
+
+      log(user1);
+      log(user3);
+
+      class Student extends Person {
+        static calcAverageRank(val) {
+          let sum = 0;
+          val.forEach(item => {
+            sum += item;
+          });
+          return sum / val.length;
+        }
+
+        constructor(name, age, hobby, averageRank) {
+          super(name, age, hobby);
+          this.averageRank = averageRank;
+        }
+
+        sayHello() {
+          super.sayHello();
+          log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
+        }
+
+        sayHello2 = () => {
+          super.sayHello();
+          log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
+        }
+
+        get fullInfo() {
+          return this.name + ', ' + this.age + ', средний бал' + this.averageRank;
+        }
+
+        set fullInfo(a) {
+          this.name = a.name;
+          this.age = a.age;
+          this.averageRank = a.averageRank;
+        }
       }
+
+      var student1 = new Student('mikki', 20, ['dance'], 5);
+      student1.sayHello();
+      student1.sayHello2();
+      student1.fullInfo = { name: 'O', age: 10, averageRank: 4 };
+      log(student1.fullInfo);
+
+      log(Student.calcAverageRank([3, 4, 5, 6]));
+
+     
+
+      log('var', test_var);
+
+      var test_var = 10;
+
+      let test_let = 20;
+      log('let', test_let);
+
+      /////
+      // деструктуризация
+      var carArrow = {
+        model: 'ok',
+        age: 200
+      };
+
+      const { model, age: carAge = 0 } = carArrow;
+
+      //  spread operator
+      const fruits = [];
+      const fruits2 = ['mango', ...fruits];
+
+      /// ..rest
+      const rest = (...rest) => {
+        log(rest);
+      };
+
+      rest(1, 2);
+
+      console.clear()
     </script>
   </body>
 </html>

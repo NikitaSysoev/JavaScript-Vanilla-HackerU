@@ -52,42 +52,43 @@
       }
 
       function handleClickButton(e) {
+        console.log(e.eventPhase)
         console.log('this is from BUTTON > handleClickButton', e);
+        // console.log(
+        //   'this is from BUTTON > handleClickButtonSecond ',
+        //   this.getAttribute('data-info')
+        // );
       }
 
       function handleClickButtonSecond(e) {
-        console.log(
-          'this is from BUTTON > handleClickButtonSecond ',
-          this.getAttribute('data-info')
-        );
+        console.log('PHASE ' + e.eventPhase, e.target)
+        // e.stopPropagation();
       }
 
       function handleDivClick(e) {
-        console.log(e.eventPhase);
-        console.log('PHASE 1', e.currentTarget);
-        e.stopPropagation();
+        console.log('PHASE ' + e.eventPhase, e.currentTarget);
+        // e.stopPropagation();
       }
 
       function handleDivClickBubble(e) {
-        console.log('PHASE ', e.eventPhase);
-        console.log(e.currentTarget);
-      }
-
-      function handleDOMClick(e) {
-        console.log();
+        console.log('PHASE ' + e.eventPhase, e.currentTarget);
       }
 
       var inputElement = document.getElementById('input1');
 
-      document.getElementById('input1').onclick = handleClickButtonSecond;
+      inputElement.onclick = handleClickButtonSecond;
 
       var div1 = document.getElementById('div1');
       var div2 = document.getElementById('div2');
 
       div1.addEventListener('click', handleDivClick, true);
-      div2.addEventListener('click', handleDivClick, true);
-      div1.addEventListener('click', handleDivClickBubble, false);
-      div2.addEventListener('click', handleDivClickBubble, false);
+      // div2.addEventListener('click', handleDivClick, true);
+      // div1.addEventListener('click', handleDivClickBubble, false);
+      // div2.addEventListener('click', handleDivClickBubble, false);
+
+      // .addEventListener('click', handleDivClickBubble, true);
+      // document.addEventListener('click', handleDivClickBubble, false);
+
     </script>
   </body>
 </html>

@@ -11,7 +11,7 @@
       ////////////////////////////////
 
       function Person() {
-        this.call = () => console.log(this); // здесь метод значит this указывает на 
+        this.call = () => console.log(this); // здесь метод значит this указывает на
         this.call2 = function() {
           console.log(this);
         };
@@ -32,14 +32,14 @@
           call2: function() {
             return {
               arrowFunction: () => this
-            }
+            };
           }
         }
       };
       console.log(person2.call());
       console.log(person2.call2());
-      console.log('child', person2.personChild.call())
-      console.log(person2.personChild.call2().arrowFunction().name)
+      console.log('child', person2.personChild.call());
+      console.log(person2.personChild.call2().arrowFunction().name);
 
       //////////////////////////
 
@@ -69,7 +69,7 @@
         Child();
       }
       Parent();
-      // для каждого вызова функции напимер Parent для нее создается специальный объект LexicalEnvironment
+      // вызов Parent для нее создается специальный объект LexicalEnvironment
       // и в нее вкладываются все переменные которые находятся на одном уровне с ней и уровнем выше
 
       ////////////////////
@@ -97,6 +97,48 @@
       for (var i = 0; i < 10; i++) {
         print(i);
       }
+
+      /////
+      // Можно ли сказть что функция fn через 2 секунды попадет в очередь событий?
+      // и если основной поток будет выполнятся 12 секунд то функция fn() запустится
+      // через 10 секунд после попадания в очередь
+      // и если ajax запрсо выполнистя чез 1 секнуду то он первее fn() попадет в очередь?
+
+      function fn() {
+        console.log('fn');
+      }
+      setTimeout(fn, 2000);
+
+      // / здесь resolve и функция после then одно и то же?
+      const promise = new Promise(function(resolve, reject) {
+        resolve('ok');
+        reject(new Error('noooo'));
+      });
+
+      promise
+        .then(function(data) {
+          log(data);
+        })
+        .catch(function(err) {
+          log(err);
+        });
+
+      ////
+      /// получается что здесь на 130 стрчоке код ждет выполнения а все остальное ниже не выполняется
+      // косноль лог тоже будет ждать пока выполнится await req??
+      async function x() {
+        const res = await req;
+        return res;
+      }
+
+      console.log('0');
+
+      // fetch выкидывается из потока в Web Api ?
+      // promise выкидывается из потока в Web Api?
+      // async await
+      // какие же server requests являются request api
+
+      
     </script>
   </body>
 </html>
