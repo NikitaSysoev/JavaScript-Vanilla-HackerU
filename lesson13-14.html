@@ -14,7 +14,6 @@
     <script>
       async function printMovies(data) {
         const movies = await data.json();
-
         let res = '';
         movies.forEach((item, index) => {
           res += '<li class="list-group-item">';
@@ -23,33 +22,50 @@
           res += "<img src='" + item.show.image.medium + "'> " + item.show.name + ' <br>';
           res += item.show.summary + ' <br></li>';
         });
-
         document.getElementById('movieList').innerHTML = res;
-
-        log('printMovies', movies);
       }
 
       function printError(err) {
         log('printError', err);
       }
 
-      // XMLHttpRequest
-      const movies = fetch('https://api.tvmaze.com/search/shows?q=batman');
-      movies.then(printMovies).catch(printError);
-      log(movies);
-
-      function promiseTimeout() {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => resolve('ura'), 1500);
+      function get(url) {
+        return new Promise(function(resolve, reject) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.onload = () => resolve(xhr.responseText);
+          xhr.onerror = () => reject(xhr.statusText);
+          xhr.send();
         });
       }
 
-      promiseTimeout()
-        .then(successMessage => {
-          log(successMessage);
-        })
-        .catch(err => echo(err));
+      function printMovies2(data) {
+        const movies = JSON.parse(data);
+        let res = '';
+        movies.forEach((item, index) => {
+          res += '<li class="list-group-item">';
+          res += item.show.name + ' <br>';
+          res += item.show.premiered + ' <br>';
+          res += "<img src='" + item.show.image.medium + "'> " + item.show.name + ' <br>';
+          res += item.show.summary + ' <br></li>';
+        });
+        document.getElementById('movieList').innerHTML = res;
+      }
 
+      // XMLHttpRequest
+      const movies = fetch('https://api.tvmaze.com/search/shows?q=batman');
+      const movies2 = get('https://api.tvmaze.com/search/shows?q=batman');
+
+      movies2
+        .then(printMovies2)
+        .then(() => {
+          echo('next step after printmovie2');
+          throw new Error('s');
+        })
+        .then(() => echo('next step afer next step'))
+        .catch(printError)
+        .then(e => echo('afer catch', e));
+      // movies.then(printMovies).catch(printError);
     </script>
   </body>
 </html>

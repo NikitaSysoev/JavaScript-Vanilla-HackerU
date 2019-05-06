@@ -48,7 +48,7 @@
       }
       var a;
 
-      console.log(a); /// функция приоритетнее чем вар
+      console.log(a); /// функция приоритетнее чем вар, поэтому выведется тело функции
 
       //////////////////////
 
@@ -59,6 +59,7 @@
       function Parent() {
         // cтек переменных функции: b, Child
         /// LexicalEnvironmentParent: b, Child, w
+        // замыкание - w
         var b = 'b';
         function Child(name) {
           // cтек переменных функции: x, name
@@ -90,7 +91,7 @@
       // решение2
       function print(val) {
         setTimeout(() => {
-          console.log(val);
+          console.log(val); // благодаря замыканию val будет равен аргументу которую получит функция
         }, 0);
       }
 
@@ -109,19 +110,24 @@
       }
       setTimeout(fn, 2000);
 
-      // / здесь resolve и функция после then одно и то же?
+      // resolve это что вроде return того что функция-колбэк которая после then получит в качестве авходного параметра?
       const promise = new Promise(function(resolve, reject) {
-        resolve('ok');
+        resolve('oktq');
         reject(new Error('noooo'));
       });
 
+      // здесь код перывается и ждет пока разрешится промис или он также выведет
+      // его из потока в web api?
       promise
         .then(function(data) {
-          log(data);
+          return data;
         })
+        .then(date => console.log(date))
         .catch(function(err) {
-          log(err);
+          console.log(err);
         });
+
+      console.log('1');
 
       ////
       /// получается что здесь на 130 стрчоке код ждет выполнения а все остальное ниже не выполняется
@@ -138,7 +144,9 @@
       // async await
       // какие же server requests являются request api
 
-      
+      /// почеу когда мы используем fetch
+      // fetch('').then(res => res.json()).then(data => echo(data))
+      // res приходит промимсом и что делает json()
     </script>
   </body>
 </html>
