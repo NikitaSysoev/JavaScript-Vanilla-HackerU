@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hometask5</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="../js/module.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>HomeTask 5</h1>
+      <form>
+        <div class="form-group">
+          <input type="text" class="form-control" id="input1" placeholder="Ввести текст" />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="inputDelimeter"
+            placeholder="Задать разделители"
+          />
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1" />
+            <label class="form-check-label" for="checkbox1">
+              Может содержать текст
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="input2" placeholder="Найти строку" />
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="input3" placeholder="Строка для замены" />
+        </div>
+        <!-- <div class="form-group">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="minValue"
+              value="minValue"
+              checked
+            />
+            <label class="form-check-label" for="minValue">
+              Минимальное значение
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="maxValue"
+              value="maxValue"
+            />
+            <label class="form-check-label" for="maxValue">
+              Максимальное значение
+            </label>
+          </div>
+        </div> -->
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-primary btn-block" onclick="handleArrays();">
+            Массивы
+          </button>
+          <!-- <button type="button" class="btn btn btn-secondary btn-block" onclick="handleNormalizeArray();">
+            Сжать массив
+          </button> -->
+          <button
+            type="button"
+            class="btn btn-info  btn-block"
+            onclick="handleStrings();"
+            style="margin-top: 0;"
+          >
+            Строки
+          </button>
+          <button
+            type="button"
+            class="btn btn btn-secondary btn-block"
+            onclick="handleRepalaceString();"
+            style="margin-top: 0;"
+          >
+            Заменить строку
+          </button>
+          <button
+            type="button"
+            class="btn btn btn-info btn-block"
+            onclick="handleNormalizeString();"
+            style="margin-top: 0;"
+          >
+            Нормализовать строку по разделителям
+          </button>
+        </div>
+      </form>
+      <div id="result1" style="margin-top: 10px;"></div>
+    </div>
+    <script>
+      // общее состояние приложения-формы
+      const STATE = {
+        input: '',
+        delimeter: null,
+        customDelimeter: null,
+        inputFind: '',
+        inputForReplace: '',
+        btnDisabled: true
+      };
+
+      const DANGER = 'danger';
+      const SUCCESS = 'success';
+
+      // метод получения всех необходимых значений из формы
+      function getDataFromForm() {
+        STATE.input = document.getElementById('input1').value;
+        STATE.customDelimeter = document.getElementById('inputDelimeter').value;
+        STATE.inputFind = document.getElementById('input2').value;
+        STATE.inputForReplace = document.getElementById('input3').value;
+        STATE.delimeter = document.getElementById('checkbox1').checked ? ' ' : ' ;,';
+      }
+
+      // метод вытаскивания значений из строки по разделителям
+      function solution(str, delimeter) {
+        return [...str]
+          .map(item => ([...delimeter].includes(item) ? ' ' : item))
+          .join('')
+          .split(' ')
+          .filter(item => !!item);
+      }
+
+      // методы вывода результата на страницу
+      function renderResult(type, result, node) {
+        let div = document.createElement('div');
+        div.classList.add('alert');
+        if (type === 'danger') {
+          div.classList.add('alert-danger');
+          div.textContent = result;
+        }
+        if (type === 'success') {
+          div.classList.add('alert-success');
+          div.textContent = result;
+        }
+        node.appendChild(div);
+      }
+
+      function clearColorInputs() {
+        const input2 = document.getElementById('input2');
+        const input3 = document.getElementById('input3');
+        input2.classList.remove('is-invalid');
+        input3.classList.remove('is-invalid');
+      }
+
+      // обработчик работы с массивами
+      function handleArrays() {
+        clearColorInputs();
+        // получаем данные из формы и записываем их в стейт
+        getDataFromForm();
+        // получаем узел DOM куда будем рендерить результат
+        const node = document.getElementById('result1');
+        // очищаем узел от предыдущего результата
+        node.innerHTML = '';
+        // получаем массив элементов по заданному разделителю
+        const array = solution(STATE.input, STATE.delimeter);
+        // оставляем только числа в массиве
+        const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
+
+        // если чисел нет выводим ошибку на страницу
+        if (!onlyNumbers.length) {
+          renderResult(DANGER, 'Ничего не найдено', node);
+          return false;
+        }
+
+        // ищем элементы значения которые меньше среднего арифметического этих элементов
+        findElementsLowerThanAverage(onlyNumbers, node);
+        // находим два целых наименьших по значению элементов
+        findTwoLowerElements(onlyNumbers, node);
+        // находим сумму всех по модулю значений элементов которые идут после первого отрицательного в массиве
+        sumModulesAfterNegativeNumber(onlyNumbers, node);
+        // находим номер самого минимального по модуля значения среди элементов массива
+        findNumberOfMinModule(onlyNumbers, node);
+      }
+
+      function findElementsLowerThanAverage(array, node) {
+        if (array.length > 1) {
+          // Вычисляем среднее арифметическое всех чисел
+          const average = array.reduce((a, b) => a + b) / array.length;
+          // Вычисляем какие числа меньше среднего арифметического всех чисел
+          let result = array.filter(item => item < average);
+          // преобразуем результат в строку
+          result = result.join(', ');
+          result = `Элементы значения которых меньше среднего арифметического: ${result}`;
+          renderResult(SUCCESS, result, node);
+        } else if (array.length === 1) {
+          renderResult(
+            DANGER,
+            'Чтобы посчитать среднее арифметическое нужно как минимум 2 числа',
+            node
+          );
+        }
+      }
+
+      function findTwoLowerElements(array, node) {
+        // Оставляем только целые числа
+        const onlyIntegerNumbers = array.filter(item => Number.isInteger(item));
+        // находим наименьшее значение в массиве
+        const firstMin = Math.min(...onlyIntegerNumbers);
+        // оставлем только эти наименьшие числа в массиве
+        const arrayMin = onlyIntegerNumbers.filter(item => item === firstMin);
+
+        let secondMin = null;
+        if (arrayMin.length === 1) {
+          const newArray = onlyIntegerNumbers.filter(item => item !== firstMin);
+          secondMin = Math.min(...newArray);
+        } else {
+          secondMin = firstMin;
+        }
+
+        let result = null;
+        if (onlyIntegerNumbers.length === 1) {
+          result = `Единственное целое число ${firstMin}`;
+        } else {
+          result = `Два наименьших элементов среди целых чисел: ${secondMin}, ${firstMin}`;
+        }
+        renderResult(SUCCESS, result, node);
+      }
+
+      function sumModulesAfterNegativeNumber(array, node) {
+        const indexOfFirstNegativeNumber = array.findIndex(item => item < 0);
+        if (indexOfFirstNegativeNumber === -1) {
+          renderResult(DANGER, 'Отрицательных значений нет', node);
+          return false;
+        }
+        array = array.slice(indexOfFirstNegativeNumber + 1);
+        if (!array.length) {
+          renderResult(DANGER, 'Никаких значений после первого отрицательного элемента нет', node);
+          return false;
+        }
+        let result = array.reduce((acc, item) => acc + Math.abs(item), 0);
+        result = `Сумма модулей элементов массива, расположенных после первого отрицательного элемента = ${result}`;
+        renderResult(SUCCESS, result, node);
+      }
+
+      function findNumberOfMinModule(array, node) {
+        const onlyModules = array.map(item => Math.abs(item));
+        const minModule = Math.min(...onlyModules);
+        let result = onlyModules.indexOf(minModule);
+        result = `Номер минимального по модулю элемента массива = ${result + 1}`;
+        renderResult(SUCCESS, result, node);
+      }
+
+      function handleStrings() {
+        clearColorInputs();
+        // получаем данные из формы и записываем их в стейт
+        getDataFromForm();
+        // получаем узел DOM куда будем рендерить результат
+        const node = document.getElementById('result1');
+        // очищаем узел от предыдущего результата
+        node.innerHTML = '';
+        // получаем массив элементов по заданному разделителю
+        const array = solution(STATE.input, STATE.delimeter);
+        if (!array.length) {
+          renderResult(DANGER, 'Ничего не найдено', node);
+          return false;
+        }
+        findLongestString(array, node);
+      }
+
+      function findLongestString(array, node) {
+        // находим самое длинное слово в массиве
+        const maxLongerString = array.reduce(
+          (acc, item) => (acc.length > item.length ? acc : item),
+          ''
+        );
+        // находим индексы всех значений с такой же длиной
+        const longerStrings = array
+          .reduce((acc, item, index) => {
+            if (item.length === maxLongerString.length) {
+              acc.push(index);
+            }
+            return acc;
+          }, [])
+          .map(item => item + 1);
+
+        let result = null;
+        if (longerStrings.length === 1) {
+          result = `Номер самой длинной строки = ${longerStrings[0]}`;
+        } else {
+          result = `Номера самых длинных строк: ${longerStrings.join(', ')}`;
+        }
+        renderResult(SUCCESS, result, node);
+      }
+
+      function handleRepalaceString() {
+        // получаем данные из формы и записываем их в стейт
+        getDataFromForm();
+        // получаем узел DOM куда будем рендерить результат
+        const node = document.getElementById('result1');
+        // очищаем узел от предыдущего результата
+        node.innerHTML = '';
+
+        const input1 = document.getElementById('input1');
+        const input2 = document.getElementById('input2');
+        const input3 = document.getElementById('input3');
+
+        if (!STATE.input) {
+          renderResult(DANGER, 'Ничего не найдено', node);
+          return false;
+        }
+        clearColorInputs();
+        if (!STATE.inputFind) input2.classList.add('is-invalid');
+        if (!STATE.inputForReplace) input3.classList.add('is-invalid');
+        if (!STATE.inputFind || !STATE.inputForReplace) return false;
+
+        const newStr = STATE.input.replaceString(STATE.inputFind, STATE.inputForReplace);
+        input1.value = newStr;
+        STATE.input = newStr;
+      }
+
+      String.prototype.replaceString = function(str2, str3) {
+        const array = solution(this, ' ');
+        const result = array.map(item => (item === str2 ? str3 : item)).join(' ');
+        return result;
+      };
+
+      function handleNormalizeString() {
+        getDataFromForm();
+        const str = STATE.input.normalizeString(STATE.customDelimeter);
+      }
+
+      String.prototype.normalizeString = function(delimeter) {
+
+      };
+    </script>
+  </body>
+</html>

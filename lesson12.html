@@ -20,6 +20,10 @@
         sayHello() {
           log(this.name, 'says hello');
         }
+
+        sayHello2 = () => {
+          log(this.name, 'says hello');
+        }
       }
 
       var user1 = new Person('Mas', 30, ['ski', 'painting', 'dogs']);
@@ -27,6 +31,7 @@
 
       user1.sayHello();
       user2.sayHello();
+      user2.sayHello2();
 
       function FunctionBasedPerson(name, age, hobby) {
         this.name = name;
@@ -38,13 +43,8 @@
         log(this.name, 'says hello');
       };
 
-      FunctionBasedPerson.prototype.sayHello2 = () => {
-        log(this.name, 'says hello');
-      };
-
       var user3 = new FunctionBasedPerson('Fo', 23, ['joles']);
       user3.sayHello();
-      user3.sayHello2();
 
       log(user1);
       log(user3);
@@ -71,7 +71,7 @@
         sayHello2 = () => {
           super.sayHello();
           log('im', this.name, ' age ', this.age, ' im student and i like', this.hobby);
-        }
+        };
 
         get fullInfo() {
           return this.name + ', ' + this.age + ', средний бал' + this.averageRank;
@@ -84,15 +84,17 @@
         }
       }
 
+      
+
       var student1 = new Student('mikki', 20, ['dance'], 5);
       student1.sayHello();
       student1.sayHello2();
+      clean()
+
       student1.fullInfo = { name: 'O', age: 10, averageRank: 4 };
       log(student1.fullInfo);
 
       log(Student.calcAverageRank([3, 4, 5, 6]));
-
-     
 
       log('var', test_var);
 
@@ -120,8 +122,6 @@
       };
 
       rest(1, 2);
-
-      console.clear()
     </script>
   </body>
 </html>
