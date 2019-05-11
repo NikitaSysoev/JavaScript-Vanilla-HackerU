@@ -18,19 +18,16 @@
     <script src="../js/module.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1>HomeTask 5</h1>
+    <div style="padding: 0 10px;">
       <form>
-        <div class="form-group">
-          <input type="text" class="form-control" id="input1" placeholder="Ввести текст" />
-        </div>
-        <div class="form-group">
-          <input
-            type="text"
+        <div class="form-group green-border-focus" style="margin-top: 10px;">
+          <textarea
+            id="input1"
             class="form-control"
-            id="inputDelimeter"
-            placeholder="Задать разделители"
-          />
+            placeholder="Введите текст"
+            rows="3"
+            style="resize: none;"
+          ></textarea>
         </div>
         <div class="form-group">
           <div class="form-check">
@@ -40,73 +37,105 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="input2" placeholder="Найти строку" />
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="input3" placeholder="Строка для замены" />
-        </div>
-        <!-- <div class="form-group">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="exampleRadios"
-              id="minValue"
-              value="minValue"
-              checked
-            />
-            <label class="form-check-label" for="minValue">
-              Минимальное значение
-            </label>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="inputDelimeter"
+                placeholder="Задать разделители"
+              />
+            </div>
+            <div class="form-group">
+              <button
+                type="button"
+                class="btn btn-secondary btn-block"
+                onclick="handleNormalizeString();"
+                style="margin-top: 0;"
+              >
+                Нормализовать строку по разделителям
+              </button>
+            </div>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="exampleRadios"
-              id="maxValue"
-              value="maxValue"
-            />
-            <label class="form-check-label" for="maxValue">
-              Максимальное значение
-            </label>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="input2"
+                placeholder="Строка, которую надо найти"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="input3"
+                placeholder="Строка на которую надо заменить"
+              />
+            </div>
+            <div class="form-group">
+              <button
+                type="button"
+                class="btn btn-secondary btn-block"
+                onclick="handleRepalaceString();"
+                style="margin-top: 0;"
+              >
+                Заменить строку
+              </button>
+            </div>
           </div>
-        </div> -->
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="input4"
+                placeholder="Задать интервал, например [1, 10]"
+              />
+            </div>
+            <div class="form-group">
+              <button
+                type="button"
+                class="btn btn-secondary btn-block"
+                onclick="handleCompressArray();"
+              >
+                Сжать массив
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
         <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-primary btn-block" onclick="handleArrays();">
+          <button
+            style="margin-right: 5px;"
+            type="button"
+            class="btn btn-outline-secondary btn-block"
+            onclick="handleArrays();"
+          >
             Массивы
           </button>
-          <!-- <button type="button" class="btn btn btn-secondary btn-block" onclick="handleNormalizeArray();">
-            Сжать массив
-          </button> -->
+
           <button
+            style="margin: 0 0 0 5px;"
             type="button"
-            class="btn btn-info  btn-block"
+            class="btn btn-outline-secondary btn-block"
             onclick="handleStrings();"
-            style="margin-top: 0;"
           >
             Строки
           </button>
-          <button
-            type="button"
-            class="btn btn btn-secondary btn-block"
-            onclick="handleRepalaceString();"
-            style="margin-top: 0;"
-          >
-            Заменить строку
-          </button>
-          <button
-            type="button"
-            class="btn btn btn-info btn-block"
-            onclick="handleNormalizeString();"
-            style="margin-top: 0;"
-          >
-            Нормализовать строку по разделителям
-          </button>
         </div>
+
+        <div id="result1" style="margin-top: 10px;"></div>
       </form>
-      <div id="result1" style="margin-top: 10px;"></div>
     </div>
     <script>
       // общее состояние приложения-формы
@@ -116,7 +145,7 @@
         customDelimeter: null,
         inputFind: '',
         inputForReplace: '',
-        btnDisabled: true
+        inputInterval: ''
       };
 
       const DANGER = 'danger';
@@ -128,17 +157,18 @@
         STATE.customDelimeter = document.getElementById('inputDelimeter').value;
         STATE.inputFind = document.getElementById('input2').value;
         STATE.inputForReplace = document.getElementById('input3').value;
+        STATE.inputInterval = document.getElementById('input4').value;
         STATE.delimeter = document.getElementById('checkbox1').checked ? ' ' : ' ;,';
       }
 
       // метод вытаскивания значений из строки по разделителям
-      function solution(str, delimeter) {
-        return [...str]
+      String.prototype.splitStr = function(delimeter) {
+        return [...this]
           .map(item => ([...delimeter].includes(item) ? ' ' : item))
           .join('')
           .split(' ')
           .filter(item => !!item);
-      }
+      };
 
       // методы вывода результата на страницу
       function renderResult(type, result, node) {
@@ -172,7 +202,7 @@
         // очищаем узел от предыдущего результата
         node.innerHTML = '';
         // получаем массив элементов по заданному разделителю
-        const array = solution(STATE.input, STATE.delimeter);
+        const array = STATE.input.splitStr(STATE.delimeter);
         // оставляем только числа в массиве
         const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
 
@@ -260,6 +290,20 @@
         renderResult(SUCCESS, result, node);
       }
 
+      function checkForPalindrom(str, node) {
+        return str.isPalindrom()
+          ? renderResult(SUCCESS, 'Строка является палиндромом', node)
+          : renderResult(DANGER, 'Строка НЕ является палиндромом', node);
+      }
+
+      String.prototype.isPalindrom = function() {
+        const parseStr = [...this]
+          .filter(item => item !== ' ')
+          .join('')
+          .toLowerCase();
+        return parseStr === [...parseStr].reverse().join('');
+      };
+
       function handleStrings() {
         clearColorInputs();
         // получаем данные из формы и записываем их в стейт
@@ -269,12 +313,14 @@
         // очищаем узел от предыдущего результата
         node.innerHTML = '';
         // получаем массив элементов по заданному разделителю
-        const array = solution(STATE.input, STATE.delimeter);
+        const array = STATE.input.splitStr(STATE.delimeter);
         if (!array.length) {
           renderResult(DANGER, 'Ничего не найдено', node);
           return false;
         }
         findLongestString(array, node);
+        getNumbersFromString(array, node);
+        checkForPalindrom(STATE.input, node);
       }
 
       function findLongestString(array, node) {
@@ -329,19 +375,33 @@
       }
 
       String.prototype.replaceString = function(str2, str3) {
-        const array = solution(this, ' ');
+        const array = this.splitStr(' ');
         const result = array.map(item => (item === str2 ? str3 : item)).join(' ');
         return result;
       };
 
       function handleNormalizeString() {
         getDataFromForm();
-        const str = STATE.input.normalizeString(STATE.customDelimeter);
+        document.getElementById('input1').value = STATE.input.normalizeString(
+          STATE.customDelimeter
+        );
       }
 
       String.prototype.normalizeString = function(delimeter) {
-
+        const reg = new RegExp('([' + delimeter + '])\\1', 'g');
+        const result = this.replace(reg, '');
+        return result;
       };
+
+      //////////////
+      function getNumbersFromString(str, node) {
+        const result = [...str].map(item => +item);
+        log(str);
+      }
+
+      function handleCompressArray() {
+        getDataFromForm();
+      }
     </script>
   </body>
 </html>
