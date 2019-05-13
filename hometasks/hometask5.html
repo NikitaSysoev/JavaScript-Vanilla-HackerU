@@ -83,7 +83,7 @@
               <button
                 type="button"
                 class="btn btn-secondary btn-block"
-                onclick="handleRepalaceString();"
+                onclick="handleReplaceString();"
                 style="margin-top: 0;"
               >
                 Заменить строку
@@ -170,6 +170,26 @@
           .filter(item => !!item);
       };
 
+      String.prototype.isPalindrom = function() {
+        const parseStr = [...this]
+          .filter(item => item !== ' ')
+          .join('')
+          .toLowerCase();
+        return parseStr === [...parseStr].reverse().join('');
+      };
+
+      String.prototype.replaceString = function(str2, str3) {
+        const array = this.splitStr(' ');
+        const result = array.map(item => (item === str2 ? str3 : item)).join(' ');
+        return result;
+      };
+
+      String.prototype.normalizeString = function(delimeter) {
+        const reg = new RegExp('([' + delimeter + '])\\1', 'g');
+        const result = this.replace(reg, '');
+        return result;
+      };
+
       // методы вывода результата на страницу
       function renderResult(type, result, node) {
         let div = document.createElement('div');
@@ -190,36 +210,6 @@
         const input3 = document.getElementById('input3');
         input2.classList.remove('is-invalid');
         input3.classList.remove('is-invalid');
-      }
-
-      // обработчик работы с массивами
-      function handleArrays() {
-        clearColorInputs();
-        // получаем данные из формы и записываем их в стейт
-        getDataFromForm();
-        // получаем узел DOM куда будем рендерить результат
-        const node = document.getElementById('result1');
-        // очищаем узел от предыдущего результата
-        node.innerHTML = '';
-        // получаем массив элементов по заданному разделителю
-        const array = STATE.input.splitStr(STATE.delimeter);
-        // оставляем только числа в массиве
-        const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
-
-        // если чисел нет выводим ошибку на страницу
-        if (!onlyNumbers.length) {
-          renderResult(DANGER, 'Ничего не найдено', node);
-          return false;
-        }
-
-        // ищем элементы значения которые меньше среднего арифметического этих элементов
-        findElementsLowerThanAverage(onlyNumbers, node);
-        // находим два целых наименьших по значению элементов
-        findTwoLowerElements(onlyNumbers, node);
-        // находим сумму всех по модулю значений элементов которые идут после первого отрицательного в массиве
-        sumModulesAfterNegativeNumber(onlyNumbers, node);
-        // находим номер самого минимального по модуля значения среди элементов массива
-        findNumberOfMinModule(onlyNumbers, node);
       }
 
       function findElementsLowerThanAverage(array, node) {
@@ -290,21 +280,8 @@
         renderResult(SUCCESS, result, node);
       }
 
-      function checkForPalindrom(str, node) {
-        return str.isPalindrom()
-          ? renderResult(SUCCESS, 'Строка является палиндромом', node)
-          : renderResult(DANGER, 'Строка НЕ является палиндромом', node);
-      }
-
-      String.prototype.isPalindrom = function() {
-        const parseStr = [...this]
-          .filter(item => item !== ' ')
-          .join('')
-          .toLowerCase();
-        return parseStr === [...parseStr].reverse().join('');
-      };
-
-      function handleStrings() {
+      // обработчик работы с массивами
+      function handleArrays() {
         clearColorInputs();
         // получаем данные из формы и записываем их в стейт
         getDataFromForm();
@@ -314,13 +291,29 @@
         node.innerHTML = '';
         // получаем массив элементов по заданному разделителю
         const array = STATE.input.splitStr(STATE.delimeter);
-        if (!array.length) {
+        // оставляем только числа в массиве
+        const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
+
+        // если чисел нет выводим ошибку на страницу
+        if (!onlyNumbers.length) {
           renderResult(DANGER, 'Ничего не найдено', node);
           return false;
         }
-        findLongestString(array, node);
-        getNumbersFromString(array, node);
-        checkForPalindrom(STATE.input, node);
+
+        // ищем элементы значения которые меньше среднего арифметического этих элементов
+        findElementsLowerThanAverage(onlyNumbers, node);
+        // находим два целых наименьших по значению элементов
+        findTwoLowerElements(onlyNumbers, node);
+        // находим сумму всех по модулю значений элементов которые идут после первого отрицательного в массиве
+        sumModulesAfterNegativeNumber(onlyNumbers, node);
+        // находим номер самого минимального по модуля значения среди элементов массива
+        findNumberOfMinModule(onlyNumbers, node);
+      }
+
+      function checkForPalindrom(str, node) {
+        return str.isPalindrom()
+          ? renderResult(SUCCESS, 'Строка является палиндромом', node)
+          : renderResult(DANGER, 'Строка НЕ является палиндромом', node);
       }
 
       function findLongestString(array, node) {
@@ -348,7 +341,80 @@
         renderResult(SUCCESS, result, node);
       }
 
-      function handleRepalaceString() {
+      function isNumbers(elem) {
+        const x = elem.charCodeAt();
+        if ((x >= 48 && x <= 57) || x === 45 || x === 46) {
+          return true;
+        }
+        return false;
+      }
+
+      function getNumbersFromString(array, node) {
+        const res = [];
+        const noRes = [];
+        array.forEach(item => {
+          if (!Number.isNaN(+item)) {
+            res.push(+item);
+          } else {
+            noRes.push(item);
+          }
+        });
+
+        const nums = [];
+        noRes.forEach(item => {
+          for (const value of [...item]) {
+            if (isNumbers(value)) {
+              nums.push(item);
+              break;
+            }
+          }
+        });
+
+        nums.forEach(item => {
+          let str = '';
+          for (const [index, value] of [...item].entries()) {
+            if (isNumbers(value)) {
+              str += value;
+            }
+          }
+          res.push(+str);
+        });
+
+        echo(res);
+
+        let result = '[';
+        for (const [index, item] of res.entries()) {
+          if (index + 1 === res.length) {
+            result += item;
+          } else {
+            result += item + ', ';
+          }
+        }
+        result += ']';
+
+        renderResult(SUCCESS, result, node);
+      }
+
+      function handleStrings() {
+        clearColorInputs();
+        // получаем данные из формы и записываем их в стейт
+        getDataFromForm();
+        // получаем узел DOM куда будем рендерить результат
+        const node = document.getElementById('result1');
+        // очищаем узел от предыдущего результата
+        node.innerHTML = '';
+        // получаем массив элементов по заданному разделителю
+        const array = STATE.input.splitStr(STATE.delimeter);
+        if (!array.length) {
+          renderResult(DANGER, 'Ничего не найдено', node);
+          return false;
+        }
+        findLongestString(array, node);
+        getNumbersFromString(array, node);
+        checkForPalindrom(STATE.input, node);
+      }
+
+      function handleReplaceString() {
         // получаем данные из формы и записываем их в стейт
         getDataFromForm();
         // получаем узел DOM куда будем рендерить результат
@@ -374,12 +440,6 @@
         STATE.input = newStr;
       }
 
-      String.prototype.replaceString = function(str2, str3) {
-        const array = this.splitStr(' ');
-        const result = array.map(item => (item === str2 ? str3 : item)).join(' ');
-        return result;
-      };
-
       function handleNormalizeString() {
         getDataFromForm();
         document.getElementById('input1').value = STATE.input.normalizeString(
@@ -387,20 +447,37 @@
         );
       }
 
-      String.prototype.normalizeString = function(delimeter) {
-        const reg = new RegExp('([' + delimeter + '])\\1', 'g');
-        const result = this.replace(reg, '');
-        return result;
-      };
-
-      //////////////
-      function getNumbersFromString(str, node) {
-        const result = [...str].map(item => +item);
-        log(str);
-      }
-
       function handleCompressArray() {
         getDataFromForm();
+        const interval = [10, 20];
+        // получаем массив элементов по заданному разделителю
+        const array = STATE.input.splitStr(STATE.delimeter);
+        // оставляем только числа в массиве
+        const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
+
+        const newArray = [];
+        onlyNumbers.forEach(item => {
+          if (item < interval[0] || item > interval[1]) {
+            newArray.push(item);
+          }
+        });
+        const difference = onlyNumbers.length - newArray.length;
+
+        for (let i = 0; i < difference; i++) {
+          newArray.push(0);
+        }
+
+        let result = '[';
+        for (const [index, item] of newArray.entries()) {
+          if (index + 1 === newArray.length) {
+            result += item;
+          } else {
+            result += item + ', ';
+          }
+        }
+        result += ']';
+
+        document.getElementById('input1').value = result;
       }
     </script>
   </body>
