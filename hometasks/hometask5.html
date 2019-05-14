@@ -40,7 +40,7 @@
 
         <hr />
 
-        <div class="row">
+        <div class="row" style="align-items: center">
           <div class="col-sm-4">
             <div class="form-group">
               <input
@@ -97,7 +97,7 @@
                 type="text"
                 class="form-control"
                 id="input4"
-                placeholder="Задать интервал, например [1, 10]"
+                placeholder="Задать интервал [a, b], например: 1 2"
               />
             </div>
             <div class="form-group">
@@ -449,7 +449,14 @@
 
       function handleCompressArray() {
         getDataFromForm();
-        const interval = [10, 20];
+        // получаем массив элементов по заданному разделителю
+        const inputInterval = STATE.inputInterval.splitStr(' ,');
+
+        if (inputInterval.length < 2) return false;
+
+        let [minInterval, maxInterval] = inputInterval;
+
+        if (!isNumbers(minInterval) || !isNumbers(maxInterval)) return false;
         // получаем массив элементов по заданному разделителю
         const array = STATE.input.splitStr(STATE.delimeter);
         // оставляем только числа в массиве
@@ -457,7 +464,7 @@
 
         const newArray = [];
         onlyNumbers.forEach(item => {
-          if (item < interval[0] || item > interval[1]) {
+          if (item < minInterval || item > maxInterval) {
             newArray.push(item);
           }
         });
