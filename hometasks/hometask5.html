@@ -15,7 +15,6 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <!-- <script src="../js/module.js"></script> -->
   </head>
   <body>
     <div style="padding: 0 10px;">
@@ -148,9 +147,11 @@
         inputInterval: ''
       };
 
+      // константы встречающиеся в приложении
       const DANGER = 'danger';
       const SUCCESS = 'success';
 
+      // методы вызова console.log через более короткую запись
       window.log = (...args) => console.log(...args);
       window.echo = (...args) => console.log(...args);
 
@@ -173,18 +174,20 @@
           .filter(item => !!item);
       };
 
+      // метод определения строки на палиндром, возвращает true или false
       String.prototype.isPalindrom = function() {
-        const parseStr = [...this]
-          .filter(item => item !== ' ')
-          .join('')
-          .toLowerCase();
+        // убираем все пробелы из строки
+        const parseStr = this.split(' ').join('');
+        // сравниваем полученную строку с ней же в перевернутом виде
         return parseStr === [...parseStr].reverse().join('');
       };
 
+      // метод нахождения в строке подстроки и замена ее на другую подстроку
       String.prototype.replaceString = function(search, replacement) {
         return this.split(search).join(replacement);
       };
 
+      // метод нормализации строки, убирающий все повторяющиеся в строке символы
       String.prototype.normalizeString = function(delimeter) {
         const reg = new RegExp('([' + delimeter + '])\\1', 'g');
         const result = this.replace(reg, '');
@@ -269,7 +272,8 @@
           return false;
         }
         let result = array.reduce((acc, item) => acc + Math.abs(item), 0);
-        result = `Сумма модулей элементов массива, расположенных после первого отрицательного элемента = ${result}`;
+        result = `Сумма модулей элементов массива, 
+        расположенных после первого отрицательного элемента = ${result}`;
         renderResult(SUCCESS, result, node);
       }
 
@@ -311,7 +315,8 @@
         findNumberOfMinModule(onlyNumbers, node);
       }
 
-      function checkForPalindrom(str, node) {
+      function renderPalindromResult(array, node) {
+        const str = array.join('');
         return str.isPalindrom()
           ? renderResult(SUCCESS, 'Строка является палиндромом', node)
           : renderResult(DANGER, 'Строка НЕ является палиндромом', node);
@@ -352,8 +357,8 @@
 
       function getNumbersFromString(array, node) {
         const res = [];
+
         const noRes = [];
-        log(array);
         array.forEach(item => {
           if (!Number.isNaN(+item)) {
             res.push(+item);
@@ -372,14 +377,19 @@
           }
         });
 
-        nums.forEach(item => {
+        nums.forEach(num => {
           let str = '';
-          for (const [index, value] of [...item].entries()) {
-            if (isNumbers(value)) {
-              str += value;
+          [...num].reduce((acc, item, index, self) => {
+            if (!isNumbers(item) && isNumbers(acc)) {
+              res.push(+str);
+              str = '';
             }
-          }
-          res.push(+str);
+            if (isNumbers(item)) {
+              str += item;
+              if (!self[index + 1]) res.push(+str);
+            }
+            return item;
+          }, '');
         });
 
         echo(res);
@@ -413,7 +423,7 @@
         }
         findLongestString(array, node);
         getNumbersFromString(array, node);
-        checkForPalindrom(STATE.input, node);
+        renderPalindromResult(array, node);
       }
 
       function handleReplaceString() {
