@@ -15,7 +15,7 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <script src="../js/module.js"></script>
+    <!-- <script src="../js/module.js"></script> -->
   </head>
   <body>
     <div style="padding: 0 10px;">
@@ -53,7 +53,7 @@
             <div class="form-group">
               <button
                 type="button"
-                class="btn btn-secondary btn-block"
+                class="btn btn-outline-info btn-block"
                 onclick="handleNormalizeString();"
                 style="margin-top: 0;"
               >
@@ -82,7 +82,7 @@
             <div class="form-group">
               <button
                 type="button"
-                class="btn btn-secondary btn-block"
+                class="btn btn-outline-info btn-block"
                 onclick="handleReplaceString();"
                 style="margin-top: 0;"
               >
@@ -103,7 +103,7 @@
             <div class="form-group">
               <button
                 type="button"
-                class="btn btn-secondary btn-block"
+                class="btn btn-outline-info btn-block"
                 onclick="handleCompressArray();"
               >
                 Сжать массив
@@ -118,7 +118,7 @@
           <button
             style="margin-right: 5px;"
             type="button"
-            class="btn btn-outline-secondary btn-block"
+            class="btn btn-info btn-block"
             onclick="handleArrays();"
           >
             Массивы
@@ -127,7 +127,7 @@
           <button
             style="margin: 0 0 0 5px;"
             type="button"
-            class="btn btn-outline-secondary btn-block"
+            class="btn btn-info btn-block"
             onclick="handleStrings();"
           >
             Строки
@@ -150,6 +150,9 @@
 
       const DANGER = 'danger';
       const SUCCESS = 'success';
+
+      window.log = (...args) => console.log(...args);
+      window.echo = (...args) => console.log(...args);
 
       // метод получения всех необходимых значений из формы
       function getDataFromForm() {
@@ -178,10 +181,8 @@
         return parseStr === [...parseStr].reverse().join('');
       };
 
-      String.prototype.replaceString = function(str2, str3) {
-        const array = this.splitStr(' ');
-        const result = array.map(item => (item === str2 ? str3 : item)).join(' ');
-        return result;
+      String.prototype.replaceString = function(search, replacement) {
+        return this.split(search).join(replacement);
       };
 
       String.prototype.normalizeString = function(delimeter) {
@@ -352,6 +353,7 @@
       function getNumbersFromString(array, node) {
         const res = [];
         const noRes = [];
+        log(array);
         array.forEach(item => {
           if (!Number.isNaN(+item)) {
             res.push(+item);
