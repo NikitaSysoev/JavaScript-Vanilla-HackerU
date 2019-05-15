@@ -309,7 +309,7 @@
         findElementsLowerThanAverage(onlyNumbers, node);
         // находим два целых наименьших по значению элементов
         findTwoLowerElements(onlyNumbers, node);
-        // находим сумму всех по модулю значений элементов которые идут после первого отрицательного в массиве
+        // находим сумму всех по модулю значений элементов которые идут после первого отрицат. в массиве
         sumModulesAfterNegativeNumber(onlyNumbers, node);
         // находим номер самого минимального по модуля значения среди элементов массива
         findNumberOfMinModule(onlyNumbers, node);
@@ -329,6 +329,7 @@
           ''
         );
         // находим индексы всех значений с такой же длиной
+        // и увеличиваем на 1 чтобы получить номера
         const longerStrings = array
           .reduce((acc, item, index) => {
             if (item.length === maxLongerString.length) {
@@ -337,13 +338,14 @@
             return acc;
           }, [])
           .map(item => item + 1);
-
+        // создаем разметку с полученным результатом для рендера
         let result = null;
         if (longerStrings.length === 1) {
           result = `Номер самой длинной строки = ${longerStrings[0]}`;
         } else {
           result = `Номера самых длинных строк: ${longerStrings.join(', ')}`;
         }
+        // рендерим результат в узел DOM-дерева
         renderResult(SUCCESS, result, node);
       }
 
