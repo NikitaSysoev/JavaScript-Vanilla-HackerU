@@ -120,7 +120,7 @@
             class="btn btn-info btn-block"
             onclick="handleArrays();"
           >
-            Массивы
+            Работа с Массивами
           </button>
 
           <button
@@ -129,7 +129,7 @@
             class="btn btn-info btn-block"
             onclick="handleStrings();"
           >
-            Строки
+            Работа со Строками
           </button>
         </div>
 
@@ -196,7 +196,7 @@
 
       // методы вывода результата на страницу
       function renderResult(type, result, node) {
-        let div = document.createElement('div');
+        const div = document.createElement('div');
         div.classList.add('alert');
         if (type === 'danger') {
           div.classList.add('alert-danger');
@@ -224,12 +224,12 @@
           let result = array.filter(item => item < average);
           // преобразуем результат в строку
           result = result.join(', ');
-          result = `Элементы значения которых меньше среднего арифметического: ${result}`;
+          result = `1) Элементы значения которых меньше среднего арифметического: ${result}`;
           renderResult(SUCCESS, result, node);
         } else if (array.length === 1) {
           renderResult(
             DANGER,
-            'Чтобы посчитать среднее арифметическое нужно как минимум 2 числа',
+            '1) Чтобы посчитать среднее арифметическое нужно как минимум 2 числа',
             node
           );
         }
@@ -253,9 +253,9 @@
 
         let result = null;
         if (onlyIntegerNumbers.length === 1) {
-          result = `Единственное целое число ${firstMin}`;
+          result = `2) Единственное целое число ${firstMin}`;
         } else {
-          result = `Два наименьших элементов среди целых чисел: ${secondMin}, ${firstMin}`;
+          result = `2) Два наименьших элементов среди целых чисел: ${secondMin}, ${firstMin}`;
         }
         renderResult(SUCCESS, result, node);
       }
@@ -263,25 +263,35 @@
       function sumModulesAfterNegativeNumber(array, node) {
         const indexOfFirstNegativeNumber = array.findIndex(item => item < 0);
         if (indexOfFirstNegativeNumber === -1) {
-          renderResult(DANGER, 'Отрицательных значений нет', node);
+          renderResult(DANGER, '4) Отрицательных значений нет', node);
           return false;
         }
         array = array.slice(indexOfFirstNegativeNumber + 1);
         if (!array.length) {
-          renderResult(DANGER, 'Никаких значений после первого отрицательного элемента нет', node);
+          renderResult(
+            DANGER,
+            '4) Никаких значений после первого отрицательного элемента нет',
+            node
+          );
           return false;
         }
         let result = array.reduce((acc, item) => acc + Math.abs(item), 0);
-        result = `Сумма модулей элементов массива, 
+        result = `4) Сумма модулей элементов массива, 
         расположенных после первого отрицательного элемента = ${result}`;
         renderResult(SUCCESS, result, node);
       }
 
       function findNumberOfMinModule(array, node) {
-        const onlyModules = array.map(item => Math.abs(item));
+        // оставляем только числа в массиве
+        const onlyNumbers = array.map(item => +item).filter(item => !Number.isNaN(item));
+        // преобразовываем все элементы в модули
+        const onlyModules = onlyNumbers.map(item => Math.abs(item));
+        // находим минимальный по модулю элемент в новом массиве
         const minModule = Math.min(...onlyModules);
-        let result = onlyModules.indexOf(minModule);
-        result = `Номер минимального по модулю элемента массива = ${result + 1}`;
+        // находим какой индекс этот минимальынй по модулю имеет в старом массиве
+        let result = array.findIndex(item => minModule === Math.abs(item));
+        result = `5) Номер элемента минимального по модулю = ${result + 1}`;
+        // результат на страницу
         renderResult(SUCCESS, result, node);
       }
 
@@ -312,7 +322,7 @@
         // находим сумму всех по модулю значений элементов которые идут после первого отрицат. в массиве
         sumModulesAfterNegativeNumber(onlyNumbers, node);
         // находим номер самого минимального по модуля значения среди элементов массива
-        findNumberOfMinModule(onlyNumbers, node);
+        findNumberOfMinModule(array, node);
       }
 
       function renderPalindromResult(array, node) {
