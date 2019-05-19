@@ -189,15 +189,18 @@
 
       // метод нормализации строки, убирающий все повторяющиеся в строке символы
       String.prototype.normalizeString = function(delimeter) {
-        const elements = this.split('');
-        const arr = [];
-        elements.forEach((item, index, self) => {
-          if ([...delimeter].includes(item) && [...delimeter].includes(arr[0])) {
-            delete self[index];
-            delete self[index - 1];
-          }
-          arr.splice(0, 1, item);
-        });
+        const elements = [...this];
+       
+        for (const del of [...delimeter]) {
+          const arr = [];
+          elements.forEach((item, index, self) => {
+            if (del === item && del === arr[0]) {
+              delete self[index];
+              delete self[index - 1];
+            }
+            arr.splice(0, 1, item);
+          });
+        }
 
         const result = elements.join('');
         return result;
