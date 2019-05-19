@@ -1,14 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Lesson15</title>
     <script src="js/module.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Lesson 15</h1>
-    <script></script>
-</body>
+    <script>
+      var user10 = {
+        name: 'vasya',
+        age: 30
+      };
+
+      var worker = {
+        fabricName: 'Red Star',
+        adress: 'Novoselovskaya',
+        __proto__: user10
+      };
+
+      for (var key in worker) {
+        if (worker.hasOwnProperty(key)) {
+          echo('key = ', key);
+        }
+      }
+
+      Object.keys(worker).forEach(item => log(item));
+
+      ///
+
+      const mySymbol = Symbol();
+      log(typeof mySymbol);
+
+      const gSymbol1 = Symbol.for('Moscow');
+      const gSymbol2 = Symbol.for('Moscow');
+
+      echo('is it global: ', Symbol.keyFor(gSymbol2));
+
+      let myArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+      var obj = {
+        start: 0,
+        end: 20
+      };
+
+      obj[Symbol.iterator] = function() {
+        let current = this.start;
+        let end = this.end;
+
+        return {
+          next() {
+            if (current <= end) {
+              return {
+                done: false,
+                value: current++
+              };
+            } else {
+              return {
+                done: true
+              };
+            }
+          }
+        };
+      };
+
+      function* goToRestaruant() {
+        yield 'Подождать оф';
+        yield 'Выберите блюдо из меню';
+        yield 'Заказать';
+        yield 'Съесть';
+      }
+
+      const myGenerator = goToRestaruant();
+      
+      echo('myGenerator = ' + JSON.stringify(myGenerator.next()));
+
+
+      
+
+    </script>
+  </body>
 </html>

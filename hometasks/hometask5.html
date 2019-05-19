@@ -189,8 +189,17 @@
 
       // метод нормализации строки, убирающий все повторяющиеся в строке символы
       String.prototype.normalizeString = function(delimeter) {
-        const reg = new RegExp('([' + delimeter + '])\\1', 'g');
-        const result = this.replace(reg, '');
+        const elements = this.split('');
+        const arr = [];
+        elements.forEach((item, index, self) => {
+          if ([...delimeter].includes(item) && [...delimeter].includes(arr[0])) {
+            delete self[index];
+            delete self[index - 1];
+          }
+          arr.splice(0, 1, item);
+        });
+
+        const result = elements.join('');
         return result;
       };
 
@@ -466,9 +475,8 @@
 
       function handleNormalizeString() {
         getDataFromForm();
-        document.getElementById('input1').value = STATE.input.normalizeString(
-          STATE.customDelimeter
-        );
+        const { input: str, customDelimeter: delimeter } = STATE;
+        document.getElementById('input1').value = str.normalizeString(delimeter);
       }
 
       function handleCompressArray() {
