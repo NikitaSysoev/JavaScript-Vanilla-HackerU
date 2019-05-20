@@ -190,7 +190,7 @@
       // метод нормализации строки, убирающий все повторяющиеся в строке символы
       String.prototype.normalizeString = function(delimeter) {
         const elements = [...this];
-       
+
         for (const del of [...delimeter]) {
           const arr = [];
           elements.forEach((item, index, self) => {
@@ -340,8 +340,8 @@
       function renderPalindromResult(array, node) {
         const str = array.join('');
         return str.isPalindrom()
-          ? renderResult(SUCCESS, 'Строка является палиндромом', node)
-          : renderResult(DANGER, 'Строка НЕ является палиндромом', node);
+          ? renderResult(SUCCESS, '5) Строка является палиндромом', node)
+          : renderResult(DANGER, '5) Строка НЕ является палиндромом', node);
       }
 
       function findLongestString(array, node) {
@@ -363,9 +363,9 @@
         // создаем разметку с полученным результатом для рендера
         let result = null;
         if (longerStrings.length === 1) {
-          result = `Номер самой длинной строки = ${longerStrings[0]}`;
+          result = `1) Номер самой длинной строки = ${longerStrings[0]}`;
         } else {
-          result = `Номера самых длинных строк: ${longerStrings.join(', ')}`;
+          result = `1) Номера самых длинных строк: ${longerStrings.join(', ')}`;
         }
         // рендерим результат в узел DOM-дерева
         renderResult(SUCCESS, result, node);
@@ -418,7 +418,7 @@
 
         echo(res);
 
-        let result = '[';
+        let result = '4) [';
         for (const [index, item] of res.entries()) {
           if (index + 1 === res.length) {
             result += item;
