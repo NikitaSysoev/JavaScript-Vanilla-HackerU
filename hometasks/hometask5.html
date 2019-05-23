@@ -345,6 +345,8 @@
       }
 
       function findLongestString(array, node) {
+        // нормализовываем строки в соответвии с заднными разделителями
+        array = array.map(item => item.splitStr(STATE.delimeter).join(' '));
         // находим самое длинное слово в массиве
         const maxLongerString = array.reduce(
           (acc, item) => (acc.length > item.length ? acc : item),
@@ -439,15 +441,23 @@
         const node = document.getElementById('result1');
         // очищаем узел от предыдущего результата
         node.innerHTML = '';
+        // получим массив строк из инпута
+        const strings = STATE.input.split('\n');
+        // получаем строку из инпута такая какая она есть
+        const elements = STATE.input.replaceString('\n', ' ');
         // получаем массив элементов по заданному разделителю
-        const array = STATE.input.splitStr(STATE.delimeter);
-        if (!array.length) {
+        const substrings = elements
+          .split(' ')
+          .join(' ')
+          .splitStr(STATE.delimeter);
+        if (!substrings.length) {
           renderResult(DANGER, 'Ничего не найдено', node);
           return false;
         }
-        findLongestString(array, node);
-        getNumbersFromString(array, node);
-        renderPalindromResult(array, node);
+
+        findLongestString(strings, node);
+        getNumbersFromString(substrings, node);
+        renderPalindromResult(substrings, node);
       }
 
       function handleReplaceString() {

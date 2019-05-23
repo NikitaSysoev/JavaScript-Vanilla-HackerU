@@ -145,7 +145,7 @@
         fullname: 'petrov',
         prop: {
           fullname: 'serov',
-          getFullname: function(){
+          getFullname: function() {
             return this.fullname;
           }
         }
@@ -158,22 +158,61 @@
 
       ///
 
-      var x, {x: y=1} = {x}; y;
-      log(y, x)
+      var x,
+        { x: y = 1 } = { x };
+      y;
+      log(y, x);
 
       ///
-     
-      var xx1 = function(){
+
+      var xx1 = function() {
         return yy1;
       };
 
-      var zz1 = function(t){
+      var zz1 = function(t) {
         var yy1 = 10;
         return t();
-      }
+      };
       var yy1 = 5;
-      log(zz1(xx1))
-     
+      log(zz1(xx1));
+
+      ////
+
+      // собеседования.
+      // замыкания. что это такое, как работает
+      // про контекст7 бинд кол эплай
+      // различие const var let
+      // отличие функций от стрелочных
+      // наследование
+
+      echo(
+        (function(x, f = () => x) {
+          var x;
+          var y = x;
+          x = 2;
+          return [x, y, f()];
+        })(1)
+      );
+
+      /////
+
+      const q = 10,
+        q1 = { a: 10 };
+
+      function f(q, q1) {
+        q = 20;
+        q1.a = 20;
+      }
+      f(q, q1);
+      log(q, q1.a);
+      ////
+      (function() {
+        // var aaa = bbb = 5;///
+        // var aaa = window.bbb = 5;
+        bbb = 10;
+      })();
+
+      log(bbb);
     </script>
   </body>
 </html>
