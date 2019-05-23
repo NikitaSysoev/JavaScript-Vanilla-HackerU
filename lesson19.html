@@ -4,20 +4,176 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>Less</title>
+    <script src="js/module.js"></script>
   </head>
   <body>
     <script>
-      
-      
-      function a() {
-        const x = () => console.log(this);  
-          x();
+      // function a() {
+      //   const x = () => console.log(this);
+      //     x();
 
-        console.log(this);
+      //   console.log(this);
+      // }
+      // const obj = {name: 23}
+      // a.call(obj);
+
+      function solution1(str) {
+        const array = string.split(', ');
+        const sortedArr = [];
+        array.forEach(item => {
+          const sort = [...item].sort().join('');
+          if (sortedArr.includes(sort)) return false;
+          sortedArr.push(sort);
+        });
+        let result = [];
+        for (const [index, word] of sortedArr.entries()) {
+          result[index] = array.filter(item => [...item].sort().join('') === word);
+        }
+        result = result.filter(item => item.length > 1);
+        return result;
       }
-      const obj = {name: 23}
-      a.call(obj);
+
+      const string =
+        'мир, соколок, рим, торс, трос, вектор, рост, сорт, корвет, корсет, сектор, лекарство, колосок, стекловар, осколок, анализ, овечка, трава, смех, уста';
+
+      log(solution1(string));
+
+      /////
+      function fn(a, b, c) {
+        return a + b + c;
+      }
+
+      function fn2(a) {
+        return function(b) {
+          return function(c) {
+            return a + b + c;
+          };
+        };
+      }
+
+      function fn3(a) {
+        return function(b, c) {
+          return a + b + c;
+        };
+      }
+
+      function fn4(a, b) {
+        return function(c) {
+          return a + b + c;
+        };
+      }
+
+      log(fn(1, 2, 3));
+      log(fn2(1)(2)(3));
+      log(fn3(1)(2, 3));
+      log(fn4(1, 2)(3));
+
+      ////
+
+      function debounce(f, ms) {
+        return function() {
+          setTimeout(() => f.apply(this, arguments), ms);
+        };
+      }
+
+      function sayHi() {
+        alert('Привет, ' + [...arguments].join(', '));
+      }
+
+      let sayHiDeferred = debounce(sayHi, 2000);
+      sayHiDeferred(1, 2, 3);
+
+      // function f(x) {
+      //   alert(x);
+      // }
+
+      // let t = debounce(f, 2000);
+
+      ////
+
+      var a = 0;
+      let b = 10;
+      (function() {
+        log(a); // undefined //
+        log(foo()); // 2
+        log(b); // 10
+
+        var a = 1;
+        // let b = 11;
+        function foo() {
+          return 2;
+        }
+      })();
+      ///
+      clean();
+
+      let aa = [];
+      let bb = [1, 2, 3];
+      let cc = [4, 5, 6];
+
+      aa.push.apply(bb, cc); /// одолжили метод, и вызываем в контектсе другого массива
+
+      log(aa);
+      log(bb);
+      log(cc);
+
+      ///
+
+      let num = 10,
+        obj1 = {
+          value: 'first'
+        },
+        obj2 = { value: 'second' };
+
+      const obj3 = obj2;
+
+      ((num, obj1, obj2) => {
+        num = num * 10;
+        obj1 = obj2;
+        obj2.value = ' new value';
+      })(num, obj1, obj2);
+
+      log(num); // 10
+      log(obj1.value); // first
+      log(obj2.value); //new value
+      log(obj3.value); // new value
+
+      //
+      window.fullname = 'ivanov';
+      let obj = {
+        fullname: 'petrov',
+        prop: {
+          fullname: 'serov',
+          getFullname: function(){
+            return this.fullname;
+          }
+        }
+      };
+
+      let func = obj.prop.getFullname;
+      log(func()); // 'ivanov'
+      log(obj.prop.getFullname()); // 'serov'
+      log(func.bind(obj)());
+
+      ///
+
+      var x, {x: y=1} = {x}; y;
+      log(y, x)
+
+      ///
+     
+      var xx1 = function(){
+        return yy1;
+      };
+
+      var zz1 = function(t){
+        var yy1 = 10;
+        return t();
+      }
+      var yy1 = 5;
+      log(zz1(xx1))
+     
     </script>
   </body>
 </html>

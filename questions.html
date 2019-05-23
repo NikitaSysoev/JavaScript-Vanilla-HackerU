@@ -148,15 +148,32 @@
       // fetch('').then(res => res.json()).then(data => echo(data))
       // res приходит промимсом и что делает json()
 
-
-      for( const v of [1,2,3]) {
+      for (const v of [1, 2, 3]) {
         console.log(v);
       }
 
-      for(const i=0; i< 10; i++){
+      for (const i = 0; i < 10; i++) {
         /// не работает
       }
 
+      /////
+      // при вызове функции замыкание, Lexical Environment формируется
+      // там где функция объявлена а не вызвана
+
+
+      let yy = 3; 
+
+      function f() {
+        let yy = 2;
+        f2(); // почему здесь 3, а  не 2?
+      }
+
+      function f2() {
+        console.log(yy);
+      }
+
+      f(); // 3
+      f2(); // 3
     </script>
   </body>
 </html>
