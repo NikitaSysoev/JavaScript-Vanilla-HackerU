@@ -9,17 +9,17 @@
   </head>
   <body>
     <script>
-      // function a() {
-      //   const x = () => console.log(this);
-      //     x();
-
-      //   console.log(this);
-      // }
-      // const obj = {name: 23}
-      // a.call(obj);
+      ///
+      String.prototype.splitStr = function(delimeter) {
+        return [...this]
+          .map(item => ([...delimeter].includes(item) ? ' ' : item))
+          .join('')
+          .split(' ')
+          .filter(item => !!item);
+      };
 
       function solution1(str) {
-        const array = string.split(', ');
+        const array = str.splitStr(', ');
         const sortedArr = [];
         array.forEach(item => {
           const sort = [...item].sort().join('');
@@ -35,8 +35,7 @@
       }
 
       const string =
-        'мир, соколок, рим, торс, трос, вектор, рост, сорт, корвет, корсет, сектор, лекарство, колосок, стекловар, осколок, анализ, овечка, трава, смех, уста';
-
+        'мир, соколок, рим, торс,  трос    вектор, рост, сорт, корвет, корсет, сектор, лекарство, колосок, стекловар, осколок, анализ, овечка, трава, смех, уста';
       log(solution1(string));
 
       /////
@@ -70,6 +69,36 @@
       log(fn4(1, 2)(3));
 
       ////
+      function fn5(num) {
+        let currentSum = num;
+        function f() {
+          if (!arguments[0]) return false;
+          currentSum += arguments[0];
+          return f;
+        }
+        f.toString = function() {
+          return currentSum;
+        };
+        return f;
+      }
+
+      log(fn5(1)(2)(3));
+
+      ////
+
+      function fn6() {
+        // const args = Array.prototype.slice.apply(arguments);
+        // const args = [].slice.apply(arguments);   
+        const args = [...arguments];
+        let res = 0;
+        for (const value of args) {
+          res += value;
+        }
+        return res;
+      }
+      log('fn6', fn6(1, 2, 3));
+
+      ////
 
       function debounce(f, ms) {
         return function() {
@@ -82,7 +111,7 @@
       }
 
       let sayHiDeferred = debounce(sayHi, 2000);
-      sayHiDeferred(1, 2, 3);
+      // sayHiDeferred(1, 2, 3);
 
       // function f(x) {
       //   alert(x);
@@ -106,7 +135,6 @@
         }
       })();
       ///
-      clean();
 
       let aa = [];
       let bb = [1, 2, 3];
@@ -154,7 +182,7 @@
       let func = obj.prop.getFullname;
       log(func()); // 'ivanov'
       log(obj.prop.getFullname()); // 'serov'
-      log(func.bind(obj)());
+      log(func.bind(obj)()); // 'petrov'
 
       ///
 
